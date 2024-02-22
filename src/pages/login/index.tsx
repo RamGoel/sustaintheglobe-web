@@ -1,9 +1,12 @@
 import Button from '@mui/material/Button';
 import appImage from '../../assets/res/login.svg';
+import googleImage from '../../assets/google.png';
+import fbImage from '../../assets/facebook.png';
 import InputAdornment from '@mui/material/InputAdornment';
 import { TextField } from '@mui/material';
 import { COLORS } from '../../utils/colors';
 import { AtSign, LockIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 
 export default function LoginPage() {
@@ -59,11 +62,19 @@ export default function LoginPage() {
             }} variant="contained" className='w-11/12 py-2' > Login</Button>
 
             <h4 className={`font-semibold text-lg text-black text-center mt-4`}>or login with</h4>
-            <div>
-                <div>
-
+            <div className='flex items-center justify-around my-3'>
+                <div className='p-3 border-[3px] rounded-lg px-5 mx-2 hover:bg-green-200 transition-all cursor-pointer border-green-500'>
+                    <img src={googleImage} width={30} height={30} />
+                </div>
+                <div className='p-3 border-[3px] rounded-lg px-5 mx-2 hover:bg-green-200 transition-all cursor-pointer border-green-500'>
+                    <img src={fbImage} width={30} height={30} />
                 </div>
             </div>
+            <Link to={'/signup'}>
+                <div className='flex justify-end mb-3 cursor-pointer'>
+                    <h4 className={`font-semibold text-lg text-green-500`}>New to EcoEcho? Register Now</h4>
+                </div>
+            </Link>
         </div>
     </div >;
 }

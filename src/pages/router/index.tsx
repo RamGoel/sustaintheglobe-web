@@ -11,6 +11,7 @@ import ProfilePage from "../profile";
 import { initFirebaseApp } from "../../utils/firebase";
 import FeedPage from "../feed";
 import DashboardPage from "../dashboard";
+import LeaderBoard from "../leaderboard"
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     {
         path: "/feed",
         element: <FeedPage />,
+    },
+    {
+        path: "/leaderboard",
+        element: <LeaderBoard />,
     },
 ]);
 const Router = () => {

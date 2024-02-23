@@ -39,9 +39,7 @@ export default function LoginPage() {
         })
     }
 
-    return <div className='flex items-center flex-col justify-center my-auto h-screen '>
-        <div className="flex flex-col items-center min-h-[400px] w-full md:w-1/3 p-4">
-
+    return <div className="flex flex-col items-center min-h-[400px] p-4">
             <img src={appImage} width={200} height={200} />
             <h2 className='text-3xl font-semibold'>Login</h2>
             <form onSubmit={(e) => {
@@ -91,7 +89,5 @@ export default function LoginPage() {
                     <h4 className={`font-semibold text-lg text-green-500`}>New to EcoEcho? Register Now</h4>
                 </div>
             </Link>
-        </div>
-
-    </div >;
+    </div>
 }

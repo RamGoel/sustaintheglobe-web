@@ -1,4 +1,4 @@
-import { ArrowRight, MapPinned, PinIcon, UserCircle2Icon, UserRound, VenetianMask } from 'lucide-react'
+import { ArrowRight, MapPinned, UserCircle2Icon, UserRound, VenetianMask } from 'lucide-react'
 import profileImage from '../../assets/res/ic_default_profile.svg'
 import editImage from '../../assets/res/ic_edit.svg'
 import manImage from '../../assets/res/ic_male.svg'
@@ -18,8 +18,7 @@ const OnboardingPage = () => {
         location: ''
     })
     return (
-        <div className='flex items-center flex-col justify-center my-auto h-screen '>
-            <div className="flex flex-col items-center min-h-[400px] w-full md:w-1/3 p-4">
+        <div className="flex flex-col items-center min-h-[400px] p-4">
                 <div className='relative p-5'>
                     <img src={profileImage} width={100} height={100} />
                     <img src={editImage} className=' absolute bottom-4 -right-1' width={60} height={60} />
@@ -102,7 +101,6 @@ const OnboardingPage = () => {
                         </h4>
                     </div>
                 </Link>
-            </div>
         </div>
     )
 }

@@ -1,7 +1,9 @@
 export type TaskProps = {
-  category: string;
-  desc: string;
-  level: number;
-  taskID: string;
+  image: string;
   title: string;
+  score: string;
+  desc: string;
+  category: string;
+  taskId: string;
+  level: 1 | 2 | 3;
 };

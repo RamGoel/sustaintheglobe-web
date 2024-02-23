@@ -1,6 +1,5 @@
 import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
-import { usePostStore } from '../../store/feed.store'
 import BottomNavbar from '../../components/bottom-nav'
 import ic_points from '../../assets/res/ic_points.svg';
 import ic_medal_first from '../../assets/res/ic_medal_first.svg';

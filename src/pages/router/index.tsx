@@ -10,7 +10,6 @@ import OnboardingPage from "../onboarding";
 import ProfilePage from "../profile";
 import { initFirebaseApp } from "../../utils/firebase";
 import FeedPage from "../feed";
-import DashboardPage from "../dashboard";
 import LeaderBoard from "../leaderboard"
 import TaskPage from "../tasks";
 import ActionLoader from "../../components/action-loader";

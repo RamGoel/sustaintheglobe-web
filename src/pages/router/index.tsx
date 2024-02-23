@@ -11,6 +11,7 @@ import ProfilePage from "../profile";
 import { initFirebaseApp } from "../../utils/firebase";
 import FeedPage from "../feed";
 import DashboardPage from "../dashboard";
+import LeaderBoard from "../leaderboard"
 import TaskPage from "../tasks";
 import ActionLoader from "../../components/action-loader";
 import { useLoaderStore } from "../../store/loader.store";
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
     {
         path: "/feed",
         element: <FeedPage />,
+    },
+    {
+        path: "/leaderboard",
+        element: <LeaderBoard />,
     },
     {
         path: "/tasks",

@@ -1,13 +1,11 @@
 import { initializeApp } from "firebase/app";
-
 const firebaseConfig = {
-  apiKey: "AIzaSyBaocon7dpJYwfDw3VI1j-pRRxOvANvPFc",
-  authDomain: "eco-echo.firebaseapp.com",
-  projectId: "eco-echo",
-  storageBucket: "eco-echo.appspot.com",
-  messagingSenderId: "601713943219",
-  appId: "1:601713943219:web:c3ddaff2ef10b0daa3c6c6",
-  measurementId: "G-4ZR83RNW0Q",
+  apiKey: "AIzaSyCS5MpMkzyQ3fE-OM0RVtvzgRTkDuXoyWg",
+  authDomain: "sustaintheglobe-db1b9.firebaseapp.com",
+  projectId: "sustaintheglobe-db1b9",
+  storageBucket: "sustaintheglobe-db1b9.appspot.com",
+  messagingSenderId: "609215970977",
+  appId: "1:609215970977:web:9ca180d51e4fe18d583ae0",
 };
 
 export const initFirebaseApp = () => {

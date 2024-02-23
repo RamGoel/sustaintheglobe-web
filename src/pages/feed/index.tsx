@@ -11,7 +11,7 @@ const FeedPage = () => {
     const options = ['Nearby', 'Country', 'World'];
 
     return (
-        <div className=' w-full md:w-1/3 mx-auto mt-4'>
+        <div className=' mt-4'>
             <div></div>
             <h1 className='text-2xl font-semibold'>Feed</h1>
             <p className='font-semibold text-gray-500'>See what others have Done!</p>

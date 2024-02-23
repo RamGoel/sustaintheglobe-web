@@ -31,17 +31,17 @@ const ProfilePage = () => {
     const { user: user1 } = useUserStore();
     return (
         <div className='flex items-center flex-col justify-top my-auto h-screen '>
-            <div className="flex flex-col items-center min-h-[400px] w-full md:w-1/3 p-4">
-                <div className='bg-green-500 w-full p-2 flex items-center justify-between '>
+            <div className="relative pt-[60px] flex flex-col items-center min-h-[400px]">
+                <div className='fixed top-0 left-0 w-full md:w-1/3 bg-green-500 mx-auto p-1 flex items-center justify-between '>
                     <div>
                         <ArrowLeft className='text-white ml-1' />
                     </div>
-                    {user?.userID === user1?.userID ? <div className='flex items-start w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
-                        <p className='font-semibold text-green-500'>Logout</p>
-                        <LogOutIcon className='text-green-500 ml-1' />
-                    </div> : <div className='flex items-start w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
-                        <p className='font-semibold text-green-500'>Follow</p>
-                        <UserPlus className='text-green-500 ml-1' />
+                    {user?.userID === user1?.userID ? <div className='flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
+                        <p className='font-semibold text-sm text-green-500'>Logout</p>
+                        <LogOutIcon className='text-green-500 ml-1' size={18} />
+                    </div> : <div className='flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
+                        <p className='font-semibold text-sm text-green-500'>Follow</p>
+                        <UserPlus className='text-green-500 ml-1' size={18} />
                     </div>}
                 </div>
                 <div className='flex py-2 px-3 w-full items-center justify-start'>
@@ -68,16 +68,15 @@ const ProfilePage = () => {
                         <p className='text-gray-400'>Followers</p>
                     </div>
                 </div>
-
-                <div>
+                <div className='pb-[100px]'>
                     {
                         user.posts.length ? user.posts.map(item => {
                             return <PostCard {...item} />
                         }) : <NoPosts />
                     }
                 </div>
-                <BottomNavbar />
             </div>
+            <BottomNavbar />
         </div>
     )
 }

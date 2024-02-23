@@ -19,14 +19,14 @@ const EcoInput = ({
 }: EcoInputProps) => {
 
     return (
-        <div className={"flex items-center justify-start border-[.2px] shadow-lg px-4 rounded-xl my-4 w-10/12 mx-auto " + extraStyle}>
+        <div className={"flex h-[50px] min-w-[150px] w-full items-center justify-start border-[.2px] shadow-lg px-4 rounded-xl my-4 mx-auto " + extraStyle}>
             {leftIcon ? leftIcon : null}
             <input
                 placeholder={placeholder}
                 value={value}
                 type={type ?? 'text'}
                 required={required}
-                className="p-4 mt-0 w-full outline-none text-lg"
+                className="p-2 text-sm mt-0 w-full outline-none"
                 onChange={(ev) => handleChange(ev.target.value)}
             />
         </div>

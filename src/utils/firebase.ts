@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyCS5MpMkzyQ3fE-OM0RVtvzgRTkDuXoyWg",
   authDomain: "sustaintheglobe-db1b9.firebaseapp.com",
@@ -8,7 +10,9 @@ const firebaseConfig = {
   appId: "1:609215970977:web:9ca180d51e4fe18d583ae0",
 };
 
+export let app: any, db: any;
+
 export const initFirebaseApp = () => {
-  const app = initializeApp(firebaseConfig);
-  return app;
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
 };

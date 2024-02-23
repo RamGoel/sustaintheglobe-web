@@ -7,24 +7,57 @@ import otherImage from '../../assets/res/ic_other.svg'
 import EcoInput from '../../components/input'
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { UserProps } from '../../types/user.types'
+import { toast } from 'react-toastify'
+import { updateUserInfo } from './onboarding.actions'
+import ScreenLoader from '../../components/screen-loader'
+import { useLoaderStore } from '../../store/loader.store'
 
 const OnboardingPage = () => {
-    const [formData, setFormData] = useState({
+    const { userId } = useParams()
+    const navigate = useNavigate()
+    const [extras, setExtras] = useState({})
+    const { enableLoader, disableLoader } = useLoaderStore()
+    const [formData, setFormData] = useState<UserProps>({
         username: '',
-        about: '',
+        bio: '',
         gender: '',
         location: ''
     })
+
+    const handleSubmit = () => {
+        if (userId) {
+            enableLoader()
+            updateUserInfo(userId, {
+                ...formData,
+                ...extras
+            }, (success: boolean) => {
+                if (success) {
+                    toast('Profile Updated!')
+                    localStorage.setItem('USER_ID', userId)
+                    navigate('/tasks')
+                }
+                disableLoader()
+            })
+        }
+    }
+
+    if (!userId) {
+        return <ScreenLoader />
+    }
     return (
         <div className="flex flex-col items-center min-h-[400px] p-4">
-                <div className='relative p-5'>
-                    <img src={profileImage} width={100} height={100} />
-                    <img src={editImage} className=' absolute bottom-4 -right-1' width={60} height={60} />
-                </div>
-                <h1 className='text-3xl font-bold text-purple-800'>About You</h1>
+            <div className='relative p-5'>
+                <img src={profileImage} width={100} height={100} />
+                <img src={editImage} className=' absolute bottom-4 -right-1' width={60} height={60} />
+            </div>
+            <h1 className='text-3xl font-bold text-purple-800'>About You</h1>
 
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit()
+            }} className='w-full'>
                 <EcoInput
                     placeholder='Username'
                     type='text'
@@ -34,7 +67,7 @@ const OnboardingPage = () => {
                     handleChange={(val) => setFormData({ ...formData, username: val })}
                 />
 
-                <div className='p-4 bg-white rounded-lg border-2 w-10/12 shadow-lg mx-auto'>
+                <div className='p-4 bg-white rounded-lg border-2 w-full shadow-lg mx-auto'>
                     <div className='flex items-center justify-center'>
                         <UserRound className='mr-2' />
                         <h4 className='text-lg'> Tell us about yourself</h4>
@@ -48,12 +81,12 @@ const OnboardingPage = () => {
                             width: '100%',
                             margin: '10px auto'
                         }}
-                        onChange={(ev) => setFormData({ ...formData, about: ev.target.value })}
+                        onChange={(ev) => setFormData({ ...formData, bio: ev.target.value })}
                         variant="standard"
                     />
                 </div>
 
-                <div className='p-4 bg-white mt-5 rounded-lg border-2 w-10/12 shadow-lg mx-auto'>
+                <div className='p-4 bg-white mt-5 rounded-lg border-2 w-full shadow-lg mx-auto'>
                     <div className='flex items-center justify-center'>
                         <VenetianMask className='mr-2' />
                         <h4 className='text-lg'> Gender</h4>
@@ -78,11 +111,25 @@ const OnboardingPage = () => {
                 </div>
 
                 <EcoInput
+                    onClick={() => {
+                        navigator.geolocation.getCurrentPosition((val) => {
+                            const { latitude, longitude } = val.coords
+                            fetch(`https://us1.locationiq.com/v1/reverse?key=pk.6f9e856493e5bc83c515b296c5d22a48&lat=${latitude}&lon=${longitude}&format=json&`).then(res => res.json()).then(res => {
+                                setFormData({ ...formData, location: `${res.address.city},${res.address.state},${res.address.country}` })
+                                setExtras({
+                                    cityName: res.address.city,
+                                    countryName: res.address.country
+                                })
+                                console.log(res)
+                            })
+                            toast('Got your location!')
+                        })
+                    }}
                     placeholder='Tap to get location'
                     type='text'
                     leftIcon={<MapPinned color='black' />}
                     required={true}
-                    value={formData.username}
+                    value={formData?.location}
                     handleChange={(val) => setFormData({ ...formData, username: val })}
                 />
 
@@ -93,14 +140,16 @@ const OnboardingPage = () => {
                     </button>
                 </div>
 
-                <Link to={'/'}>
-                    <div className='flex justify-end my-4 pb-6'>
-                        <h4 className={`font-semibold text-center text-lg text-purple-600`}>
-                            Not your profile?<br />
-                            Sign out
-                        </h4>
-                    </div>
-                </Link>
+            </form>
+
+            <Link to={'/'}>
+                <div className='flex justify-end my-4 pb-6'>
+                    <h4 className={`font-semibold text-center text-lg text-purple-600`}>
+                        Not your profile?<br />
+                        Sign out
+                    </h4>
+                </div>
+            </Link>
         </div>
     )
 }

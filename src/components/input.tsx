@@ -6,7 +6,8 @@ export type EcoInputProps = {
     type: string,
     value: any,
     handleChange: (val: string) => void,
-    extraStyle?: string
+    extraStyle?: string,
+    onClick?: () => void
 }
 const EcoInput = ({
     placeholder,
@@ -15,11 +16,12 @@ const EcoInput = ({
     type,
     value,
     handleChange,
-    extraStyle
+    extraStyle,
+    onClick
 }: EcoInputProps) => {
 
     return (
-        <div className={"flex h-[50px] min-w-[150px] w-full items-center justify-start border-[.2px] shadow-lg px-4 rounded-xl my-4 mx-auto " + extraStyle}>
+        <div onClick={onClick} className={"flex h-[50px] min-w-[150px] w-full items-center justify-start border-[.2px] shadow-lg px-4 rounded-xl my-4 mx-auto " + extraStyle}>
             {leftIcon ? leftIcon : null}
             <input
                 placeholder={placeholder}

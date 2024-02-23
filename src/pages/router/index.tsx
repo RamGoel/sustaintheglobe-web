@@ -25,11 +25,11 @@ const router = createBrowserRouter([
         element: <SignupPage />,
     },
     {
-        path: "/onboarding",
+        path: "/:userId/onboarding",
         element: <OnboardingPage />,
     },
     {
-        path: "/profile",
+        path: "/profile/:userId",
         element: <ProfilePage />,
     },
     {
@@ -47,9 +47,9 @@ const router = createBrowserRouter([
 ]);
 const Router = () => {
     const { loader } = useLoaderStore();
-    const app = initFirebaseApp()
+    initFirebaseApp()
     return (
-        <div className="w-full md:w-1/3 mx-auto">
+        <div className="w-11/12 md:w-1/3 mx-auto">
             <ToastContainer />
             {loader ? <ActionLoader /> : null}
             <RouterProvider router={router} />

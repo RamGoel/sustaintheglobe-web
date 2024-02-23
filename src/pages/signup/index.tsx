@@ -9,19 +9,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import EcoInput from '../../components/input';
 import { useState } from 'react';
 import { createUser } from './signup.actions';
+import { useLoaderStore } from '../../store/loader.store';
 
 
 
 export default function SignupPage() {
     const [formData, setFormData] = useState<any>({})
     const navigate = useNavigate();
+    const { enableLoader, disableLoader } = useLoaderStore()
     const handleChange = (key: string, value: string | number) => {
         setFormData({ ...formData, [key]: value })
     }
 
     const handleSubmit = () => {
-        createUser(formData, () => {
-            navigate('/onboarding')
+        enableLoader()
+        createUser(formData, (_id?: string) => {
+            if (_id) {
+                toast('Please provide some more info')
+                navigate(`/${_id}/onboarding`)
+            }
+            disableLoader()
         })
     }
     return <div className='flex  items-center flex-col justify-center my-auto '>

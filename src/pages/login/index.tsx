@@ -10,11 +10,16 @@ import { toast } from 'react-toastify';
 import EcoInput from '../../components/input';
 import { loginUser } from './login.actions';
 import { useUserStore } from '../../store/user.store';
+import { UserProps } from '../../types/user.types';
+import { useTaskStore } from '../../store/task.store';
+import { useLoaderStore } from '../../store/loader.store';
 
 
 export default function LoginPage() {
     const navigate = useNavigate();
     const { saveUser } = useUserStore();
+    const { saveTasks } = useTaskStore()
+    const { enableLoader, disableLoader } = useLoaderStore();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -28,14 +33,18 @@ export default function LoginPage() {
     }
 
     const handleLogin = () => {
+        enableLoader()
         const { email, password } = formData;
         if (!email || !password) {
             toast('Both details are required');
             return;
         }
-        loginUser(email, password, (user: any) => {
-            saveUser(user)
-            navigate('/profile')
+        loginUser(email, password, (user?: UserProps) => {
+            if (user) {
+                saveUser(user)
+                navigate(`/profile/${user.userID}`)
+            }
+            disableLoader();
         })
     }
 

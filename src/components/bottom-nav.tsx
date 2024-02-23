@@ -24,7 +24,7 @@ const BottomNavbar = () => {
         {
             title: 'Profile',
             icon: profileIcon,
-            route: '/profile',
+            route: '/profile/me',
         },
 
     ]

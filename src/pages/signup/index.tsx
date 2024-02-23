@@ -5,7 +5,7 @@ import fbImage from '../../assets/facebook.png';
 import { ArrowRight } from 'lucide-react';
 import { config } from './config';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EcoInput from '../../components/input';
 import { useState } from 'react';
 import { createUser } from './signup.actions';
@@ -14,13 +14,15 @@ import { createUser } from './signup.actions';
 
 export default function SignupPage() {
     const [formData, setFormData] = useState<any>({})
-
+    const navigate = useNavigate();
     const handleChange = (key: string, value: string | number) => {
         setFormData({ ...formData, [key]: value })
     }
 
     const handleSubmit = () => {
-        createUser(formData)
+        createUser(formData, () => {
+            navigate('/onboarding')
+        })
     }
     return <div className='flex items-center flex-col justify-center my-auto h-screen '>
         <img src={appImage} width={200} height={200} />

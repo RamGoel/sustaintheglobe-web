@@ -7,7 +7,6 @@ import otherImage from '../../assets/res/ic_other.svg'
 import EcoInput from '../../components/input'
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
 import { Link } from 'react-router-dom'
 
 
@@ -20,7 +19,7 @@ const OnboardingPage = () => {
     })
     return (
         <div className='flex items-center flex-col justify-center my-auto h-screen '>
-            <div className="flex flex-col items-center min-h-[400px] w-1/3 p-4">
+            <div className="flex flex-col items-center min-h-[400px] w-full md:w-1/3 p-4">
                 <div className='relative p-5'>
                     <img src={profileImage} width={100} height={100} />
                     <img src={editImage} className=' absolute bottom-4 -right-1' width={60} height={60} />

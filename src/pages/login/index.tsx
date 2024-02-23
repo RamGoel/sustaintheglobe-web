@@ -9,10 +9,12 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import EcoInput from '../../components/input';
 import { loginUser } from './login.actions';
+import { useUserStore } from '../../store/user.store';
 
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const { saveUser } = useUserStore();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -31,7 +33,8 @@ export default function LoginPage() {
             toast('Both details are required');
             return;
         }
-        loginUser(email, password, () => {
+        loginUser(email, password, (user: any) => {
+            saveUser(user)
             navigate('/profile')
         })
     }

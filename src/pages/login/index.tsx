@@ -2,17 +2,17 @@ import Button from '@mui/material/Button';
 import appImage from '../../assets/res/login.svg';
 import googleImage from '../../assets/google.png';
 import fbImage from '../../assets/facebook.png';
-import InputAdornment from '@mui/material/InputAdornment';
-import { TextField } from '@mui/material';
 import { COLORS } from '../../utils/colors';
-import { AtSign, AtSignIcon, LockIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { AtSignIcon, LockIcon } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import EcoInput from '../../components/input';
+import { loginUser } from './login.actions';
 
 
 export default function LoginPage() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -24,12 +24,27 @@ export default function LoginPage() {
             toast('Check your email for login link!')
         }
     }
+
+    const handleLogin = () => {
+        const { email, password } = formData;
+        if (!email || !password) {
+            toast('Both details are required');
+            return;
+        }
+        loginUser(email, password, () => {
+            navigate('/profile')
+        })
+    }
+
     return <div className='flex items-center flex-col justify-center my-auto h-screen '>
-        <div className="flex flex-col items-center min-h-[400px] w-1/3 p-4">
+        <div className="flex flex-col items-center min-h-[400px] w-full md:w-1/3 p-4">
 
             <img src={appImage} width={200} height={200} />
             <h2 className='text-3xl font-semibold'>Login</h2>
-            <form className='w-full'>
+            <form onSubmit={(e) => {
+                e.preventDefault()
+                handleLogin();
+            }} className='w-full'>
                 <EcoInput
                     type="email"
                     value={formData.email}

@@ -26,7 +26,7 @@ const EcoInput = ({
                 value={value}
                 type={type ?? 'text'}
                 required={required}
-                className="p-4 mt-0 outline-none text-lg"
+                className="p-4 mt-0 w-full outline-none text-lg"
                 onChange={(ev) => handleChange(ev.target.value)}
             />
         </div>

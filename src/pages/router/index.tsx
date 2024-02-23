@@ -7,6 +7,8 @@ import SignupPage from "../signup";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import OnboardingPage from "../onboarding";
+import ProfilePage from "../profile";
+import { initFirebaseApp } from "../../utils/firebase";
 
 const router = createBrowserRouter([
     {
@@ -21,9 +23,14 @@ const router = createBrowserRouter([
         path: "/onboarding",
         element: <OnboardingPage />,
     },
+    {
+        path: "/profile",
+        element: <ProfilePage />,
+    },
 ]);
 const Router = () => {
 
+    const app = initFirebaseApp()
     return (
         <div>
             <ToastContainer />

@@ -8,6 +8,9 @@ import {
   getDoc,
   doc,
   orderBy,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { PostProps } from "../types/posts.types";
@@ -71,4 +74,29 @@ export const fetchUsersForLeaderboard = async (
   });
 
   return allUsers;
+};
+
+export const followOrUnfollowUser = async (
+  thisUserId: string,
+  otherUserId: string
+) => {
+  const document = doc(db, "Users", otherUserId);
+
+  const userSnapshot = await getDoc(document);
+
+  if (userSnapshot.exists()) {
+    if (userSnapshot.data().followers.includes(thisUserId)) {
+      await updateDoc(document, {
+        followers: arrayRemove(thisUserId),
+      });
+      toast("Followed User");
+    } else {
+      await updateDoc(document, {
+        followers: arrayUnion(thisUserId),
+      });
+      toast("Unfollowed User");
+    }
+  } else {
+    toast("User not found!");
+  }
 };

@@ -31,15 +31,16 @@ const OnboardingPage = () => {
     const handleSubmit = () => {
         if (userId) {
             enableLoader()
-            updateUserInfo(userId, {
+            const dt = {
                 ...formData,
-                ...extras
-            }, (success: boolean) => {
+                ...extras,
+            }
+            delete dt['password']
+            updateUserInfo(userId, dt, (success: boolean) => {
                 if (success) {
                     toast('Profile Updated!')
                     saveUser({
-                        ...formData,
-                        ...extras,
+                        ...dt,
                         userID: userId
                     })
                     localStorage.setItem('USER_ID', userId)

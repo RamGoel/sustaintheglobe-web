@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { UserProps } from '../../types/user.types'
 import { useLoaderStore } from '../../store/loader.store'
-import { fetchCompleteUserData } from '../../helpers/user-helper'
+import { fetchCompleteUserData, followOrUnfollowUser } from '../../helpers/user-helper'
 import { likeOrDislikePost } from '../../helpers/post-helper'
 import ScreenLoader from '../../components/screen-loader'
 import { toast } from 'react-toastify'
@@ -39,14 +39,25 @@ const ProfilePage = () => {
 
 
     useEffect(() => {
-
         getUserAction()
     }, [])
+
+    const handleFollowUser = () => {
+        if (user?.userID && profileUser?.userID) {
+            followOrUnfollowUser(user?.userID, profileUser?.userID)
+            getUserAction();
+        } else {
+            removeUser();
+            navigate('/')
+        }
+    }
 
 
     if (!profileUser) {
         return <ScreenLoader />
     }
+
+    const isFollowing = profileUser.followers?.includes(user?.userID)
 
     return (
         <div className='flex items-center flex-col justify-top my-auto h-screen '>
@@ -66,8 +77,8 @@ const ProfilePage = () => {
                     }} className='cursor-pointer flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
                         <p className='font-semibold text-sm text-green-500'>Logout</p>
                         <LogOutIcon className='text-green-500 ml-1' size={18} />
-                    </div> : <div className='flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
-                        <p className='font-semibold text-sm text-green-500'>Follow</p>
+                    </div> : <div onClick={() => handleFollowUser()} className='cursor-pointer flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
+                        <p className='font-semibold text-sm text-green-500'>{isFollowing ? 'Unfollow' : 'Follow'}</p>
                         <UserPlus className='text-green-500 ml-1' size={18} />
                     </div>}
                 </div>

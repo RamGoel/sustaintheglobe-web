@@ -66,7 +66,6 @@ export const fetchUsersForLeaderboard = async (
     );
   } else {
     if (followerId) {
-      console.log(followerId, "this passed");
       usersSnapshot = await getDocs(
         query(
           collection(db, "Users"),

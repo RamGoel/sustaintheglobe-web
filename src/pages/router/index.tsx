@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     },
     
     {
-        path: "/addpost",
+        path: "/:taskId/addpost",
         element: <AddPost />,
     },
 

@@ -1,25 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useNavigate } from 'react-router-dom'
 import checkImage from '../assets/res/ic_tick.svg'
 import { TaskProps } from '../types/task.types'
 import { getCategoryImagePath } from '../utils/mapper'
+import { toast } from 'react-toastify'
 
 const TaskCard = ({ data, type, clickHandler }: { data: TaskProps, type: string, clickHandler: () => void }) => {
+    const navigate = useNavigate();
     const bgColor: any = {
         'daily': 'bg-green-100',
         'weekly': 'bg-orange-100',
         'monthly': 'bg-red-100'
     }
+
+    const scoreMapper = {
+        "1": "3",
+        "2": '10',
+        "3": '30'
+    }
     return (
-        <div onClick={() => clickHandler()} className={`cursor-pointer border-2 flex items-center justify-around py-3 px-3 my-3 rounded-lg ${bgColor[type]}`}>
+        <div onClick={(ev: any) => {
+            if (!['task-cta', 'task-cta-image'].includes(ev.target.id)) {
+                console.log(ev.target)
+                clickHandler()
+            } else {
+                if (data.postID) {
+                    toast('Already Posted!');
+                    return;
+                }
+                navigate(`/${data.taskID}/addpost`)
+            }
+        }} className={`cursor-pointer border-2 flex items-center justify-around py-3 px-3 my-3 rounded-lg ${bgColor[type]}`}>
             <div className='p-1 bg-white border-2 rounded-xl'>
                 <img src={getCategoryImagePath(data.category)} width={40} height={40} />
             </div>
             <div className='w-8/12 ml-3 '>
                 <h4 className='font-semibold'>{data.title}</h4>
-                <p className='font-semibold text-green-600 text-sm'>+{data.score} Points</p>
+                <p className='font-semibold text-green-600 text-sm'>+{scoreMapper[data.level]} Points</p>
             </div>
-            <div className='p-1 bg-white hover:bg-green-100 transition-all cursor-pointer border-2 rounded-xl'>
-                <img src={checkImage} alt="check-image" width={40} height={40} />
+            <div id='task-cta' className='p-1 bg-white hover:bg-green-100 transition-all cursor-pointer border-2 rounded-xl'>
+                <img id='task-cta-image' src={checkImage} alt="check-image" width={40} height={40} />
             </div>
         </div>
     )

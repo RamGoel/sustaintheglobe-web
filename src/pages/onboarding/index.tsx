@@ -128,7 +128,6 @@ const OnboardingPage = () => {
                                     countryName: res.address.country,
                                     location: new GeoPoint(latitude, longitude)
                                 })
-                                console.log(res)
                             })
                             toast('Got your location!')
                         })

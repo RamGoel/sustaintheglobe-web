@@ -56,12 +56,11 @@ const LeaderBoard = () => {
         return <ScreenLoader />
     }
 
-    console.log(leadUsers, user)
     return (
         <div className='mx-auto mt-4'>
 
-            <h1 className='text-lg font-semibold'>Leaderboard</h1>
-            <p className='font-semibold text-sm text-gray-500'>Top contributors to a Sustainable Future</p>
+            <h1 className='text-2xl font-semibold'>Leaderboard</h1>
+            <p className='font-semibold text-md text-gray-500'>Top contributors to a sustainable future</p>
             <div className='flex items-center justify-start my-3'>
                 {
                     options.map(option => {

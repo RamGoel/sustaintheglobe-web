@@ -10,16 +10,22 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  setDoc,
+  increment,
+  Timestamp,
+  getFirestore,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { PostProps } from "../types/posts.types";
 import { toast } from "react-toastify";
+import { getTimeStampLikeJava } from "./task-helper";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const fetchCompletePostList = async (
   queryKey?: string,
   queryValue?: string
 ) => {
-  console.log(queryKey, queryValue);
   let postSnapshot;
   if (queryKey && queryValue) {
     postSnapshot = await getDocs(
@@ -47,7 +53,6 @@ export const fetchCompletePostList = async (
     }
   }
 
-  console.log(postsWithusers);
   return postsWithusers;
 };
 
@@ -69,4 +74,64 @@ export const likeOrDislikePost = async (postId: string, userId: string) => {
       toast("Liked Post");
     }
   }
+};
+
+export const createPost = async (
+  taskId: string,
+  postData: any,
+  callback: (val?: any) => void
+) => {
+  const storage = getStorage();
+  const file = postData.file;
+  const imageRef = ref(storage, file.name);
+
+  uploadBytes(imageRef, file)
+    .then((snapshot) => {
+      getDownloadURL(snapshot.ref)
+        .then(async (imageLink) => {
+          const newPostRef = doc(collection(db, "Posts"));
+          await setDoc(newPostRef, {
+            caption: postData.caption,
+            imageLink,
+            postTime: serverTimestamp(),
+            cityName: postData.cityName,
+            countryName: postData.countryName,
+            likes: [],
+            postID: newPostRef.id,
+            taskID: taskId,
+            userID: postData.userId,
+          });
+
+          await updateDoc(
+            doc(db, `Users/${postData.userId}/allUserTasks/${taskId}`),
+            {
+              postID: newPostRef.id,
+            }
+          );
+
+          let updatedTask = await getDoc(
+            doc(db, `Users/${postData.userId}/allUserTasks/${taskId}`)
+          );
+
+          if (updatedTask.exists()) {
+            const level = updatedTask.data().level;
+            await updateDoc(doc(db, `Users/${postData.userId}`), {
+              points: increment(level === 1 ? 3 : level === 2 ? 10 : 30),
+              completedTasks: arrayUnion(taskId),
+            });
+          }
+
+          callback(true);
+        })
+        .catch((err) => {
+          toast(err.message ?? "Some Error occurered");
+          callback(false);
+        });
+    })
+    .catch((err) => {
+      toast(err.message ?? "Some Error occurered");
+      callback(false);
+    });
+
+  return;
 };

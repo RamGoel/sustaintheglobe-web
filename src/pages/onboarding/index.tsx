@@ -13,10 +13,12 @@ import { toast } from 'react-toastify'
 import { updateUserInfo } from './onboarding.actions'
 import ScreenLoader from '../../components/screen-loader'
 import { useLoaderStore } from '../../store/loader.store'
+import { useUserStore } from '../../store/user.store'
 
 const OnboardingPage = () => {
     const { userId } = useParams()
     const navigate = useNavigate()
+    const { saveUser } = useUserStore()
     const [extras, setExtras] = useState({})
     const { enableLoader, disableLoader } = useLoaderStore()
     const [formData, setFormData] = useState<UserProps>({
@@ -35,6 +37,11 @@ const OnboardingPage = () => {
             }, (success: boolean) => {
                 if (success) {
                     toast('Profile Updated!')
+                    saveUser({
+                        ...formData,
+                        ...extras,
+                        userID: userId
+                    })
                     localStorage.setItem('USER_ID', userId)
                     navigate('/tasks')
                 }

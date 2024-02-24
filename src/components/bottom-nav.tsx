@@ -4,7 +4,9 @@ import profileIcon from '../assets/res/ic_default_profile.svg'
 import tasksIcon from '../assets/res/ic_task.svg'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 import { Link } from 'react-router-dom'
+import { useUserStore } from '../store/user.store'
 const BottomNavbar = () => {
+    const { user } = useUserStore();
     const navbarConfig = [
         {
             title: 'Leaderboard',
@@ -24,12 +26,11 @@ const BottomNavbar = () => {
         {
             title: 'Profile',
             icon: profileIcon,
-            route: '/profile/me',
+            route: '/profile/' + user?.userID,
         },
-
     ]
     return (
-        <div className='fixed z-0 bottom-0 w-full md:w-1/3'>
+        <div className='fixed z-0 bottom-0 w-full md:w-1/4'>
             <BottomNavigation>
                 {
                     navbarConfig.map(item => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface PostProps {
   caption: string;
   city: string;
@@ -6,7 +7,8 @@ export interface PostProps {
   likes: string[];
   location: string;
   postID: string;
-  postTime: Date;
+  postTime: any;
   taskID: string;
   userID: string;
+  user?: any;
 }

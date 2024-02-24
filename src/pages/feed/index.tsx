@@ -1,18 +1,46 @@
 import { CheckIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePostStore } from '../../store/feed.store'
 import NoPosts from '../../components/no-posts'
 import PostCard from '../../components/post-card'
 import BottomNavbar from '../../components/bottom-nav'
+import { fetchCompletePostList, likeOrDislikePost } from '../../helpers/post-helper'
+import { useUserStore } from '../../store/user.store'
+import { useLoaderStore } from '../../store/loader.store'
+import { useNavigate } from 'react-router-dom'
 
 const FeedPage = () => {
     const [category, setCategory] = useState('Nearby')
+    const { user } = useUserStore();
+    const { enableLoader, disableLoader } = useLoaderStore();
     const { posts, savePosts } = usePostStore();
     const options = ['Nearby', 'Country', 'World'];
+    const navigate = useNavigate()
 
+    const getData = async () => {
+        enableLoader()
+        let data;
+        if (category === 'Nearby') {
+            data = await fetchCompletePostList('cityName', user?.cityName)
+        } else if (category === 'Country') {
+            data = await fetchCompletePostList('countryName', user?.countryName)
+        } else if (category === 'World') {
+            data = await fetchCompletePostList()
+        } else return;
+
+        if (!data) {
+            navigate('/')
+        } else {
+            savePosts(data)
+        }
+        disableLoader()
+    }
+
+    useEffect(() => {
+        getData()
+    }, [category])
     return (
-        <div className=' mt-4'>
-            <div></div>
+        <div className='mt-4'>
             <h1 className='text-2xl font-semibold'>Feed</h1>
             <p className='font-semibold text-gray-500'>See what others have Done!</p>
 
@@ -26,11 +54,20 @@ const FeedPage = () => {
                 }
             </div>
 
-            {
-                posts?.length ? posts.map(item => {
-                    return <PostCard {...item} />
-                }) : <NoPosts />
-            }
+            <div className='pb-[100px]'>
+                {
+                    posts?.length ? posts.map(item => {
+                        return <PostCard likeHandler={async () => {
+                            if (user?.userID) {
+                                await likeOrDislikePost(item.postID, user.userID)
+                                getData()
+                            } else {
+                                navigate('/')
+                            }
+                        }} postData={item} />
+                    }) : <NoPosts />
+                }
+            </div>
             <BottomNavbar />
         </div>
     )

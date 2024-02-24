@@ -7,11 +7,10 @@ import { ArrowLeft, LogOutIcon, UserPlus } from 'lucide-react'
 import { useUserStore } from '../../store/user.store'
 import BottomNavbar from '../../components/bottom-nav'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useMemo, useState } from 'react'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '../../utils/firebase'
+import { useEffect, useState } from 'react'
 import { UserProps } from '../../types/user.types'
 import { useLoaderStore } from '../../store/loader.store'
+import { fetchCompleteUserData } from '../../helpers/user-helper'
 
 const ProfilePage = () => {
     const { userId } = useParams();
@@ -21,33 +20,29 @@ const ProfilePage = () => {
     const navigate = useNavigate();
 
 
-    useEffect(() => {
 
+    useEffect(() => {
         const getUserAction = async () => {
             enableLoader()
-            const querySnapshot = await getDocs(
-                query(collection(db, "Users"), where("userID", "==", userId))
-            );
+            if (userId) {
+                const data = await fetchCompleteUserData(userId);
 
-            let docs: UserProps[] = [];
-            querySnapshot.forEach((item) => {
-                docs.push(item.data());
-            });
-
-            if (!docs.length) {
-                navigate('/')
+                if (!data) {
+                    navigate('/')
+                    return;
+                }
+                setProfileUser(data)
             }
-            setProfileUser(docs[0])
             disableLoader()
         }
         getUserAction()
-    }, [disableLoader, enableLoader, navigate, userId])
+    }, [])
 
 
     return (
         <div className='flex items-center flex-col justify-top my-auto h-screen '>
             <div className="relative pt-[60px] w-full flex flex-col items-center min-h-[400px]">
-                <div className='fixed top-0 left-0 w-full md:w-1/3 bg-green-500 mx-auto p-1 flex items-center justify-between '>
+                <div className='fixed top-0 lef-0 md:left-[37.5%] w-full md:w-1/4 bg-green-500 mx-auto p-1 flex items-center justify-between '>
                     <div>
                         <ArrowLeft className='text-white ml-1' />
                     </div>
@@ -83,10 +78,10 @@ const ProfilePage = () => {
                         <p className='text-gray-400'>Followers</p>
                     </div>
                 </div>
-                <div className='pb-[100px]'>
+                <div className='pb-[100px] w-full'>
                     {
                         profileUser?.posts?.length ? profileUser?.posts.map(item => {
-                            return <PostCard {...item} />
+                            return <PostCard likeHandler={() => { }} postData={item} userData={profileUser} />
                         }) : <NoPosts />
                     }
                 </div>

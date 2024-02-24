@@ -49,7 +49,7 @@ const Router = () => {
     const { loader } = useLoaderStore();
     initFirebaseApp()
     return (
-        <div className="w-11/12 md:w-1/3 mx-auto">
+        <div className="w-11/12 md:w-1/4 mx-auto">
             <ToastContainer />
             {loader ? <ActionLoader /> : null}
             <RouterProvider router={router} />

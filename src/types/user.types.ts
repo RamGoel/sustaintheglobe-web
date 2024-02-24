@@ -19,4 +19,6 @@ export interface UserProps {
   streak?: number;
   userID?: string;
   username?: string;
+  cityName: string;
+  countryName: string;
 }

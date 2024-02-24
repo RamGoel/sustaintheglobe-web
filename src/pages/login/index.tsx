@@ -11,14 +11,12 @@ import EcoInput from '../../components/input';
 import { loginUser } from './login.actions';
 import { useUserStore } from '../../store/user.store';
 import { UserProps } from '../../types/user.types';
-import { useTaskStore } from '../../store/task.store';
 import { useLoaderStore } from '../../store/loader.store';
 
 
 export default function LoginPage() {
     const navigate = useNavigate();
     const { saveUser } = useUserStore();
-    const { saveTasks } = useTaskStore()
     const { enableLoader, disableLoader } = useLoaderStore();
     const [formData, setFormData] = useState({
         email: '',
@@ -41,8 +39,14 @@ export default function LoginPage() {
         }
         loginUser(email, password, (user?: UserProps) => {
             if (user) {
+                if (!user.profileComplete) {
+                    disableLoader();
+                    toast('Please complete your profile')
+                    navigate(`/${user.userID}/onboarding`)
+                    return;
+                }
                 saveUser(user)
-                navigate(`/profile/${user.userID}`)
+                navigate(`/tasks`)
             }
             disableLoader();
         })

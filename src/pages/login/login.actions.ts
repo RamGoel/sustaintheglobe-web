@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { toast } from "react-toastify";
 import { UserProps } from "../../types/user.types";
 import { getDocs, query, collection, where } from "firebase/firestore";
@@ -32,4 +36,16 @@ export const loginUser = (
       toast(errorMessage);
       callback();
     });
+};
+
+export const forgotPassword = async (email: string) => {
+  try {
+    const auth = getAuth();
+
+    await sendPasswordResetEmail(auth, email);
+
+    toast("Please check your inbox for mail!");
+  } catch (err: any) {
+    toast(err?.message ?? "Some error occured while forgetting password");
+  }
 };

@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import EcoInput from '../../components/input';
-import { loginUser } from './login.actions';
+import { forgotPassword, loginUser } from './login.actions';
 import { useUserStore } from '../../store/user.store';
 import { UserProps } from '../../types/user.types';
 import { useLoaderStore } from '../../store/loader.store';
@@ -26,7 +26,7 @@ export default function LoginPage() {
         if (!formData.email) {
             toast('Please enter email!')
         } else {
-            toast('Check your email for login link!')
+            forgotPassword(formData.email);
         }
     }
 

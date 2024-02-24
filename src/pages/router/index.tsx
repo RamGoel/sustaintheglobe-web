@@ -12,6 +12,9 @@ import { initFirebaseApp } from "../../utils/firebase";
 import FeedPage from "../feed";
 import LeaderBoard from "../leaderboard"
 import TaskPage from "../tasks";
+import AddPost from "../addPost"
+
+
 import ActionLoader from "../../components/action-loader";
 import { useLoaderStore } from "../../store/loader.store";
 
@@ -44,6 +47,12 @@ const router = createBrowserRouter([
         path: "/tasks",
         element: <TaskPage />,
     },
+    
+    {
+        path: "/addpost",
+        element: <AddPost />,
+    },
+
 ]);
 const Router = () => {
     const { loader } = useLoaderStore();

@@ -17,7 +17,7 @@ import { UserProps } from "../types/user.types";
 export const fetchCompleteUserData = async (userId: string) => {
   if (!userId) return;
 
-  let finalUser;
+  let finalUser: any;
 
   const userSnapshot = await getDoc(doc(db, "Users", userId));
 

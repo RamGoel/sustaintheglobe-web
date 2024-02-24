@@ -17,7 +17,7 @@ import { toast } from 'react-toastify'
 
 const ProfilePage = () => {
     const { userId } = useParams();
-    let [profileUser, setProfileUser] = useState<UserProps | null>(null)
+    let [profileUser, setProfileUser] = useState<UserProps | undefined>()
     const { enableLoader, disableLoader } = useLoaderStore()
     const { user, removeUser } = useUserStore();
     const navigate = useNavigate();

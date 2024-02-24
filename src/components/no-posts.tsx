@@ -1,5 +1,3 @@
-import React from 'react'
-
 const NoPosts = () => {
     return (
         <div className='p-4 text-center'>

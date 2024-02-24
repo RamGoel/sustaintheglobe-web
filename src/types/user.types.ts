@@ -19,5 +19,6 @@ export interface UserProps {
   userID?: string;
   username?: string;
   cityName: string;
+  password?: string;
   countryName: string;
 }

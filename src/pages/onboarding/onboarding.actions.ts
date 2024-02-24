@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -14,7 +15,7 @@ import { UserProps } from "../../types/user.types";
 export const updateUserInfo = async (
   userId: string,
   userData: UserProps,
-  callback: (success: boolean) => void
+  callback: (success: boolean, data?: UserProps) => void
 ) => {
   const user: UserProps = {
     ...userData,
@@ -32,7 +33,11 @@ export const updateUserInfo = async (
     } else {
       setDoc(doc(db, "Users", userId), user, { merge: true })
         .then(() => {
-          if (callback) callback(true);
+          getDoc(doc(db, "Users", userId)).then((res: any) => {
+            if (res.exists()) {
+              if (callback) callback(true, res.data());
+            }
+          });
         })
         .catch((err: any) => {
           toast.success(err.message ?? "Error creating account");

@@ -42,9 +42,9 @@ const ProfilePage = () => {
         getUserAction()
     }, [])
 
-    const handleFollowUser = () => {
+    const handleFollowUser = async () => {
         if (user?.userID && profileUser?.userID) {
-            followOrUnfollowUser(user?.userID, profileUser?.userID)
+            await followOrUnfollowUser(user?.userID, profileUser?.userID)
             getUserAction();
         } else {
             removeUser();
@@ -57,8 +57,7 @@ const ProfilePage = () => {
         return <ScreenLoader />
     }
 
-    const isFollowing = profileUser.followers?.includes(user?.userID)
-
+    console.log(profileUser)
     return (
         <div className='flex items-center flex-col justify-top my-auto h-screen '>
             <div className="relative pt-[60px] w-full flex flex-col items-center min-h-[400px]">
@@ -78,7 +77,7 @@ const ProfilePage = () => {
                         <p className='font-semibold text-sm text-green-500'>Logout</p>
                         <LogOutIcon className='text-green-500 ml-1' size={18} />
                     </div> : <div onClick={() => handleFollowUser()} className='cursor-pointer flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
-                        <p className='font-semibold text-sm text-green-500'>{isFollowing ? 'Unfollow' : 'Follow'}</p>
+                            <p className='font-semibold text-sm text-green-500'>{user?.userID && profileUser.followers?.includes(user?.userID) ? 'Unfollow' : 'Follow'}</p>
                         <UserPlus className='text-green-500 ml-1' size={18} />
                     </div>}
                 </div>

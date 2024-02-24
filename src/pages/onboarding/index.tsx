@@ -14,6 +14,8 @@ import { updateUserInfo } from './onboarding.actions'
 import ScreenLoader from '../../components/screen-loader'
 import { useLoaderStore } from '../../store/loader.store'
 import { useUserStore } from '../../store/user.store'
+import { GeoPoint } from 'firebase/firestore'
+import { UserProps } from '../../types/user.types'
 
 const OnboardingPage = () => {
     const { userId } = useParams()
@@ -36,13 +38,10 @@ const OnboardingPage = () => {
                 ...extras,
             }
             delete dt['password']
-            updateUserInfo(userId, dt, (success: boolean) => {
-                if (success) {
+            updateUserInfo(userId, dt, (success: boolean, data?: UserProps) => {
+                if (success && data) {
                     toast('Profile Updated!')
-                    saveUser({
-                        ...dt,
-                        userID: userId
-                    })
+                    saveUser(data)
                     localStorage.setItem('USER_ID', userId)
                     navigate('/tasks')
                 }
@@ -126,7 +125,8 @@ const OnboardingPage = () => {
                                 setFormData({ ...formData, location: `${res.address.city},${res.address.state},${res.address.country}` })
                                 setExtras({
                                     cityName: res.address.city,
-                                    countryName: res.address.country
+                                    countryName: res.address.country,
+                                    location: new GeoPoint(latitude, longitude)
                                 })
                                 console.log(res)
                             })

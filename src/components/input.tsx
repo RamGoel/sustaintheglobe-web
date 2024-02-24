@@ -7,7 +7,9 @@ export type EcoInputProps = {
     value: any,
     handleChange: (val: string) => void,
     extraStyle?: string,
-    onClick?: () => void
+    onClick?: () => void,
+    maxLength?: number;
+    minLength?: number;
 }
 const EcoInput = ({
     placeholder,
@@ -17,7 +19,9 @@ const EcoInput = ({
     value,
     handleChange,
     extraStyle,
-    onClick
+    onClick,
+    maxLength,
+    minLength
 }: EcoInputProps) => {
 
     return (
@@ -26,6 +30,8 @@ const EcoInput = ({
             <input
                 placeholder={placeholder}
                 value={value}
+                maxLength={maxLength}
+                minLength={minLength}
                 type={type ?? 'text'}
                 required={required}
                 className="p-2 text-sm mt-0 w-full outline-none"

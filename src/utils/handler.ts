@@ -16,3 +16,9 @@ export const getMonthlyTasks = (tasks: TaskProps[]) => {
     return task.level === 3;
   });
 };
+
+
+export const formatDate = (dateStr: string) => {
+  const dt = dateStr.split("/");
+  return `${dt[2]}-${dt[1]}-${dt[0]}`;
+};

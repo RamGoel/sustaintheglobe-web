@@ -10,6 +10,7 @@ import EcoInput from '../../components/input';
 import { useState } from 'react';
 import { createUser } from './signup.actions';
 import { useLoaderStore } from '../../store/loader.store';
+import moment from 'moment';
 
 
 
@@ -22,6 +23,11 @@ export default function SignupPage() {
     }
 
     const handleSubmit = () => {
+
+        if (moment(formData.dob).isAfter(moment())) {
+            toast('DOB should not be in future');
+            return;
+        }
         enableLoader()
         createUser(formData, (_id?: string) => {
             if (_id) {
@@ -54,6 +60,8 @@ export default function SignupPage() {
                         return <EcoInput
                             type={item.type}
                             required={true}
+                            maxLength={item.maxLength}
+                            minLength={item.minLength}
                             value={formData[item.dataKey]}
                             placeholder={item.placeholder}
                             leftIcon={item.icon}

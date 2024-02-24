@@ -50,7 +50,8 @@ export const fetchCompleteUserData = async (userId: string) => {
 
 export const fetchUsersForLeaderboard = async (
   queryKey?: string,
-  queryValue?: string
+  queryValue?: string,
+  followerId?: string
 ) => {
   let allUsers: UserProps[] = [];
 
@@ -64,9 +65,20 @@ export const fetchUsersForLeaderboard = async (
       )
     );
   } else {
-    usersSnapshot = await getDocs(
-      query(collection(db, "Users"), orderBy("points", "desc"))
-    );
+    if (followerId) {
+      console.log(followerId, "this passed");
+      usersSnapshot = await getDocs(
+        query(
+          collection(db, "Users"),
+          where("followers", "array-contains", followerId),
+          orderBy("points", "desc")
+        )
+      );
+    } else {
+      usersSnapshot = await getDocs(
+        query(collection(db, "Users"), orderBy("points", "desc"))
+      );
+    }
   }
 
   usersSnapshot.forEach((item) => {
@@ -80,21 +92,29 @@ export const followOrUnfollowUser = async (
   thisUserId: string,
   otherUserId: string
 ) => {
-  const document = doc(db, "Users", otherUserId);
+  const thisUserDoc = doc(db, "Users", thisUserId);
+  const otherUserDoc = doc(db, "Users", otherUserId);
 
-  const userSnapshot = await getDoc(document);
+  const thisUserSnapshot = await getDoc(thisUserDoc);
+  const otherUserSnapshot = await getDoc(otherUserDoc);
 
-  if (userSnapshot.exists()) {
-    if (userSnapshot.data().followers.includes(thisUserId)) {
-      await updateDoc(document, {
+  if (thisUserSnapshot.exists() && otherUserSnapshot.exists()) {
+    if (otherUserSnapshot.data().followers.includes(thisUserId)) {
+      await updateDoc(otherUserDoc, {
         followers: arrayRemove(thisUserId),
       });
-      toast("Followed User");
-    } else {
-      await updateDoc(document, {
-        followers: arrayUnion(thisUserId),
+      await updateDoc(thisUserDoc, {
+        following: arrayRemove(otherUserId),
       });
       toast("Unfollowed User");
+    } else {
+      await updateDoc(otherUserDoc, {
+        followers: arrayUnion(thisUserId),
+      });
+      await updateDoc(thisUserDoc, {
+        following: arrayUnion(otherUserId),
+      });
+      toast("Followed User");
     }
   } else {
     toast("User not found!");

@@ -29,8 +29,10 @@ const LeaderBoard = () => {
             data = await fetchUsersForLeaderboard('cityName', user?.cityName)
         } else if (category === 'Country') {
             data = await fetchUsersForLeaderboard('countryName', user?.countryName)
-        } else {
+        } else if (category === 'World') {
             data = await fetchUsersForLeaderboard()
+        } else if (category === 'Followers') {
+            data = await fetchUsersForLeaderboard('', '', user?.userID)
         }
 
         if (!data) {
@@ -54,6 +56,7 @@ const LeaderBoard = () => {
         return <ScreenLoader />
     }
 
+    console.log(leadUsers, user)
     return (
         <div className='mx-auto mt-4'>
 

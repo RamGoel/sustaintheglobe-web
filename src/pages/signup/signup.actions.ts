@@ -6,16 +6,19 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { v4 as uuid } from "uuid";
 import { UserProps } from "../../types/user.types";
+import moment from "moment";
 
 export const createUser = (userData: any, callback: (_id?: string) => void) => {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, userData.email, userData.password)
-    .then(async () => {
-      const docId = uuid();
-      const user: UserProps = {
+    .then(async (userCredential: any) => {
+      const docId = userCredential.user.uid;
+      const userDto: UserProps = {
         ...userData,
         userID: docId,
         currentTasks: [],
+        phone: userData.phone,
+        dob: moment(userData.dob).format("DD/MM/YYYY"),
         completedTasks: [],
         points: 0,
         posts: [],
@@ -23,11 +26,12 @@ export const createUser = (userData: any, callback: (_id?: string) => void) => {
         badges: [],
         gender: [],
         location: null,
-        streak: "",
+        streak: 0,
         username: "",
         profileComplete: false,
       };
-      setDoc(doc(db, "Users", docId), user)
+      delete userDto.password;
+      setDoc(doc(db, "Users", docId), userDto)
         .then(() => {
           if (callback) callback(docId);
         })

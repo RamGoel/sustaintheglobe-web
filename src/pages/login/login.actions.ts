@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import { UserProps } from "../../types/user.types";
-import { getDocs, query, collection, where } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 
 export const loginUser = (
@@ -20,16 +20,13 @@ export const loginUser = (
     .then(async (userCredential) => {
       const user = userCredential.user;
       console.log(user);
-      const querySnapshot = await getDocs(
-        query(collection(db, "Users"), where("email", "==", email))
-      );
+      const querySnapshot = await getDoc(doc(db, "Users", user.uid));
 
-      let docs: UserProps[] = [];
-      querySnapshot.forEach((item) => {
-        docs.push(item.data() as any);
-      });
-
-      if (callback) callback(docs[0]);
+      if (querySnapshot.exists()) {
+        if (callback) callback(querySnapshot.data() as any);
+      } else {
+        callback();
+      }
     })
     .catch((error) => {
       const errorMessage = error.message;

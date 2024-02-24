@@ -11,6 +11,8 @@ export const config = [
         type: 'tel',
         placeholder: 'Phone Number',
         dataKey: 'phone',
+        maxLength: 10,
+        minLength: 10,
         icon: <PhoneCallIcon color='black' className="my-2" />
     },
     {

@@ -16,7 +16,7 @@ import { useUserStore } from '../../store/user.store';
 
 const LeaderBoard = () => {
     const [category, setCategory] = useState('Nearby')
-    const options = ['Nearby', 'Country', 'World', 'Followers'];
+    const options = ['Nearby', 'Country', 'World', 'Following'];
     const { leadUsers, saveLeadUsers, removeLeadUsers } = useLeaderboardStore();
     const { enableLoader, disableLoader } = useLoaderStore();
     const navigate = useNavigate()
@@ -31,7 +31,7 @@ const LeaderBoard = () => {
             data = await fetchUsersForLeaderboard('countryName', user?.countryName)
         } else if (category === 'World') {
             data = await fetchUsersForLeaderboard()
-        } else if (category === 'Followers') {
+        } else if (category === 'Following') {
             data = await fetchUsersForLeaderboard('', '', user?.userID)
         }
 

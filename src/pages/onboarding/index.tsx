@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowRight, MapPinned, UserCircle2Icon, UserRound, VenetianMask } from 'lucide-react'
 import profileImage from '../../assets/res/ic_default_profile.svg'
 import editImage from '../../assets/res/ic_edit.svg'
@@ -8,7 +9,6 @@ import EcoInput from '../../components/input'
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { UserProps } from '../../types/user.types'
 import { toast } from 'react-toastify'
 import { updateUserInfo } from './onboarding.actions'
 import ScreenLoader from '../../components/screen-loader'
@@ -21,7 +21,7 @@ const OnboardingPage = () => {
     const { saveUser } = useUserStore()
     const [extras, setExtras] = useState({})
     const { enableLoader, disableLoader } = useLoaderStore()
-    const [formData, setFormData] = useState<UserProps>({
+    const [formData, setFormData] = useState<any>({
         username: '',
         bio: '',
         gender: '',

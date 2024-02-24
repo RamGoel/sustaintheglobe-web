@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import leaderBoardIcon from '../assets/res/ic_leaderboard.svg'
 import feedIcon from '../assets/res/ic_feed.svg'
 import profileIcon from '../assets/res/ic_default_profile.svg'
 import tasksIcon from '../assets/res/ic_task.svg'
-import { BottomNavigation, BottomNavigationAction } from '@mui/material'
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../store/user.store'
+import { useState } from 'react'
 const BottomNavbar = () => {
     const { user } = useUserStore();
+    const [activeTab, setActivetab] = useState<any>('Tasks')
     const navbarConfig = [
         {
             title: 'Leaderboard',
@@ -30,8 +33,10 @@ const BottomNavbar = () => {
         },
     ]
     return (
-        <div className='fixed z-0 bottom-0 w-full md:w-1/4'>
-            <BottomNavigation>
+        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, width: '25%', margin: 'auto' }}>
+            <BottomNavigation onChange={(event, newVal) => {
+                setActivetab(newVal)
+            }}>
                 {
                     navbarConfig.map(item => {
                         return <BottomNavigationAction
@@ -39,12 +44,14 @@ const BottomNavbar = () => {
                             to={item.route}
                             label={item.title}
                             value={item.title}
-                            icon={<img src={item.icon} width={30} height={30} alt='bottom-bar icon' />}
+                            icon={
+                                activeTab === item.title ? <p>{item.title}</p> : <img src={item.icon} className='pointer-events-none' width={30} height={30} alt='bottom-bar icon' />
+                            }
                         />
                     })
                 }
             </BottomNavigation>
-        </div>
+        </Paper>
     )
 }
 

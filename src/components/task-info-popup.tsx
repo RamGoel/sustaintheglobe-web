@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { X } from "lucide-react"
 import { TaskProps } from "../types/task.types"
 import { Divider, Modal, Typography } from "@mui/material"
@@ -25,7 +26,7 @@ const TaskInfoPopup = ({ data, hideFn }: { data: TaskProps, hideFn: () => void }
         aria-describedby="modal-modal-description"
         disableAutoFocus
     >
-        <Box sx={style} border={'none'} cu>
+        <Box component={null as any} sx={style} border={'none'} cu>
             <div onClick={hideFn} className="cursor-pointer absolute -top-3 -right-3 bg-red-500 w-fit p-2 rounded-full">
                 <X size={22} color="white" fontWeight={800} />
             </div>

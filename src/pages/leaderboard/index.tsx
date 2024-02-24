@@ -11,10 +11,9 @@ const LeaderBoard = () => {
     const options = ['Nearby', 'Country', 'World', 'Followers'];
 
     return (
-        <div className=' w-full md:w-1/3 mx-auto mt-4'>
-            <div></div>
+        <div className='mx-auto mt-4'>
             <h1 className='text-2xl font-semibold'>Leaderboard</h1>
-            <p className='font-semibold text-gray-500'>See what others have Done!</p>
+            <p className='font-semibold text-gray-500'>Top contributors to a Sustainable Future</p>
 
             <div className='flex items-center justify-start my-3'>
                 {
@@ -27,7 +26,7 @@ const LeaderBoard = () => {
             </div>
 
 
-            <div className='flex items-center my-3 justify-evenly '>
+            <div className='flex items-center my-5 justify-evenly w-full '>
                 <div className=" self-end text-center ">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png" className='h-20 rounded-full w-20 outline outline-offset-1 outline-stone-300' />
                     <div className='flex justify-center'>

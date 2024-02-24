@@ -31,7 +31,7 @@ const ProfilePage = () => {
                     navigate('/')
                     return;
                 }
-                setProfileUser(data)
+                setProfileUser(data as any)
             }
             disableLoader()
         }

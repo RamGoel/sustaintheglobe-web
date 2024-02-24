@@ -1,4 +1,3 @@
-import { GeoPoint } from "firebase/firestore";
 import { PostProps } from "./posts.types";
 
 export interface UserProps {

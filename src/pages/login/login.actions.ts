@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
@@ -21,7 +22,7 @@ export const loginUser = (
 
       let docs: UserProps[] = [];
       querySnapshot.forEach((item) => {
-        docs.push(item.data());
+        docs.push(item.data() as any);
       });
 
       if (callback) callback(docs[0]);

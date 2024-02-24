@@ -13,7 +13,7 @@ const FeedPage = () => {
     const [category, setCategory] = useState('Nearby')
     const { user } = useUserStore();
     const { enableLoader, disableLoader } = useLoaderStore();
-    const { posts, savePosts } = usePostStore();
+    const { posts, savePosts, removePosts } = usePostStore();
     const options = ['Nearby', 'Country', 'World'];
     const navigate = useNavigate()
 
@@ -38,6 +38,10 @@ const FeedPage = () => {
 
     useEffect(() => {
         getData()
+
+        return () => {
+            removePosts()
+        }
     }, [category])
     return (
         <div className='mt-4'>

@@ -11,42 +11,59 @@ import { useEffect, useState } from 'react'
 import { UserProps } from '../../types/user.types'
 import { useLoaderStore } from '../../store/loader.store'
 import { fetchCompleteUserData } from '../../helpers/user-helper'
+import { likeOrDislikePost } from '../../helpers/post-helper'
+import ScreenLoader from '../../components/screen-loader'
+import { toast } from 'react-toastify'
 
 const ProfilePage = () => {
     const { userId } = useParams();
     let [profileUser, setProfileUser] = useState<UserProps | null>(null)
     const { enableLoader, disableLoader } = useLoaderStore()
-    const { user } = useUserStore();
+    const { user, removeUser } = useUserStore();
     const navigate = useNavigate();
 
+    const getUserAction = async () => {
+        enableLoader()
+        if (userId) {
+            const data = await fetchCompleteUserData(userId);
+
+            if (!data) {
+                navigate('/')
+                disableLoader()
+                return;
+            }
+            setProfileUser(data as any)
+        }
+        disableLoader()
+    }
 
 
     useEffect(() => {
-        const getUserAction = async () => {
-            enableLoader()
-            if (userId) {
-                const data = await fetchCompleteUserData(userId);
 
-                if (!data) {
-                    navigate('/')
-                    return;
-                }
-                setProfileUser(data as any)
-            }
-            disableLoader()
-        }
         getUserAction()
     }, [])
 
+
+    if (!profileUser) {
+        return <ScreenLoader />
+    }
 
     return (
         <div className='flex items-center flex-col justify-top my-auto h-screen '>
             <div className="relative pt-[60px] w-full flex flex-col items-center min-h-[400px]">
                 <div className='fixed top-0 lef-0 md:left-[37.5%] w-full md:w-1/4 bg-green-500 mx-auto p-1 flex items-center justify-between '>
-                    <div>
+                    <div className='cursor-pointer' onClick={() => {
+                        navigate(-1)
+                    }}>
                         <ArrowLeft className='text-white ml-1' />
                     </div>
-                    {user?.userID === profileUser?.userID ? <div className='flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
+                    {user?.userID === profileUser?.userID ? <div onClick={() => {
+                        removeUser()
+                        navigate('/', {
+                            replace: true
+                        })
+                        toast('Logged out!')
+                    }} className='cursor-pointer flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
                         <p className='font-semibold text-sm text-green-500'>Logout</p>
                         <LogOutIcon className='text-green-500 ml-1' size={18} />
                     </div> : <div className='flex items-center w-fit justify-center border-[1.2px] border-gray-300 p-2 rounded-lg bg-white '>
@@ -60,7 +77,7 @@ const ProfilePage = () => {
                         <h2 className='text-lg font-semibold -mb-1'>{profileUser?.fullName}</h2>
                         <h4 className='font-semibold text-md text-gray-400 my-1'>@{profileUser?.username}</h4>
                         <p className='w-fit px-2 bg-gray-200 rounded-xl py-1 text-sm'>
-                            {profileUser?.bio}
+                            {profileUser?.bio?.substring(0, 50)}
                         </p>
                     </div>
                 </div>
@@ -81,7 +98,14 @@ const ProfilePage = () => {
                 <div className='pb-[100px] w-full'>
                     {
                         profileUser?.posts?.length ? profileUser?.posts.map(item => {
-                            return <PostCard likeHandler={() => { }} postData={item} userData={profileUser} />
+                            return <PostCard likeHandler={async () => {
+                                if (user?.userID) {
+                                    await likeOrDislikePost(item.postID, user.userID)
+                                    getUserAction()
+                                } else {
+                                    navigate('/')
+                                }
+                            }} postData={item} userData={profileUser} />
                         }) : <NoPosts />
                     }
                 </div>

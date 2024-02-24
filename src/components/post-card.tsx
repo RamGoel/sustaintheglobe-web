@@ -10,7 +10,7 @@ const PostCard = ({ postData, userData, likeHandler }: { postData: PostProps, us
     return (
         <div className="relative p-2 rounded-xl bg-white border-2 my-3 w-full">
             <img src={imageLink} width={'100%'} height={'300px'} className="rounded-xl h-[250px] object-cover" />
-            <div onClick={() => likeHandler()} className="w-[50px] bg-green-100 p-2 border-2 text-center rounded-lg absolute top-5 right-5">
+            <div onClick={() => likeHandler()} className="w-[50px] bg-green-100 cursor-pointer p-2 border-2 text-center rounded-lg absolute top-5 right-5">
                 <HeartIcon color={COLORS.primary} className="mx-auto" size={25} />
                 <p className="text-center text-green-500 font-semibold">{likes.length}</p>
             </div>

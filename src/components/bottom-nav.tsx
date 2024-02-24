@@ -33,7 +33,7 @@ const BottomNavbar = () => {
         },
     ]
     return (
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, width: '25%', margin: 'auto' }}>
+        <Paper className='w-full md:w-1/4' sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, margin: 'auto' }}>
             <BottomNavigation onChange={(event, newVal) => {
                 setActivetab(newVal)
             }}>

@@ -7,10 +7,12 @@ import {
   where,
   getDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { PostProps } from "../types/posts.types";
 import { toast } from "react-toastify";
+import { UserProps } from "../types/user.types";
 
 export const fetchCompleteUserData = async (userId: string) => {
   if (!userId) return;
@@ -41,4 +43,32 @@ export const fetchCompleteUserData = async (userId: string) => {
   finalUser.posts = userPostDocs;
 
   return finalUser;
+};
+
+export const fetchUsersForLeaderboard = async (
+  queryKey?: string,
+  queryValue?: string
+) => {
+  let allUsers: UserProps[] = [];
+
+  let usersSnapshot;
+  if (queryKey && queryValue) {
+    usersSnapshot = await getDocs(
+      query(
+        collection(db, "Users"),
+        where(queryKey, "==", queryValue),
+        orderBy("points", "desc")
+      )
+    );
+  } else {
+    usersSnapshot = await getDocs(
+      query(collection(db, "Users"), orderBy("points", "desc"))
+    );
+  }
+
+  usersSnapshot.forEach((item) => {
+    allUsers.push(item.data() as any);
+  });
+
+  return allUsers;
 };

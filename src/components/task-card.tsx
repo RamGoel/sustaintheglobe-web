@@ -14,7 +14,7 @@ const TaskCard = ({ data, type, clickHandler }: { data: TaskProps, type: string,
             <div className='p-1 bg-white border-2 rounded-xl'>
                 <img src={getCategoryImagePath(data.category)} width={40} height={40} />
             </div>
-            <div className='w-8/12 '>
+            <div className='w-8/12 ml-3 '>
                 <h4 className='font-semibold'>{data.title}</h4>
                 <p className='font-semibold text-green-600 text-sm'>+{data.score} Points</p>
             </div>

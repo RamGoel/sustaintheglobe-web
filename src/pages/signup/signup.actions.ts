@@ -4,7 +4,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
-import { v4 as uuid } from "uuid";
 import { UserProps } from "../../types/user.types";
 import moment from "moment";
 

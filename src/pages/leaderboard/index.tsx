@@ -77,8 +77,8 @@ const LeaderBoard = () => {
                 <div onClick={() => {
                     if (!leadUsers[1]) return;
                     navigate(`/profile/${leadUsers[1]?.userID}`)
-                }} className="self-end text-center ">
-                    <img src={ic_default_profile} className='h-20 rounded-full w-20 outline outline-offset-1 outline-stone-300' />
+                }} className={`cursor-pointer self-end text-center ${!leadUsers[1] ? 'opacity-30' : ''}`}>
+                    <img src={ic_default_profile} className='h-20 rounded-full w-20 border border-offset-1 border-stone-300' />
                     <div className='flex justify-center'>
                         <img src={ic_medal_second} className='h-6' />
                     </div>
@@ -87,7 +87,7 @@ const LeaderBoard = () => {
                         <h4 className='font-semibold text-sm p-0 -mt-[.7px] ml-1'>{leadUsers[1]?.points}</h4>
                     </div>
                     <div className="font-semibold">
-                        {leadUsers[1]?.email === user?.email ? 'You' : leadUsers[1]?.fullName}
+                        {leadUsers[1]?.email === user?.email ? 'You' : leadUsers[1]?.fullName ?? '---'}
                     </div>
 
                 </div> 
@@ -96,8 +96,8 @@ const LeaderBoard = () => {
                 <div onClick={() => {
                     if (!leadUsers[0]) return;
                     navigate(`/profile/${leadUsers[0].userID}`)
-                }} className="cursor-pointer self-end text-center ">
-                    <img src={ic_default_profile} className='h-24 rounded-full outline outline-offset-1 outline-amber-300' />
+                }} className={`cursor-pointer self-end text-center ${!leadUsers[0] ? 'opacity-30' : ''}`}>
+                    <img src={ic_default_profile} className='h-24 rounded-full border-2 border-offset-1 border-amber-300' />
                     <div className='flex justify-center'>
                         <img src={ic_medal_first} className='h-8' />
                     </div>
@@ -106,15 +106,15 @@ const LeaderBoard = () => {
                         <h4 className='font-semibold text-sm p-0 -mt-[.7px] ml-1'>{leadUsers[0]?.points}</h4>
                     </div>
                     <div className="font-semibold">
-                        {leadUsers[0]?.email === user?.email ? 'You' : leadUsers[0]?.fullName}
+                        {leadUsers[0]?.email === user?.email ? 'You' : leadUsers[0]?.fullName ?? '---'}
                     </div>
                 </div>
 
                 <div onClick={() => {
                     if (!leadUsers[2]) return;
                     navigate(`/profile/${leadUsers[2].userID}`)
-                }} className="cursor-pointer self-end text-center">
-                    <img src={ic_default_profile} className='h-20 rounded-full outline outline-offset-1 outline-amber-800' />
+                }} className={`cursor-pointer self-end text-center ${!leadUsers[2] ? 'opacity-30' : ''}`}>
+                    <img src={ic_default_profile} className='h-20 rounded-full border-2 border-offset-1 border-amber-800' />
                     <div className='flex justify-center'>
                         <img src={ic_medal_third} className='h-6' />
                     </div>
@@ -123,7 +123,7 @@ const LeaderBoard = () => {
                         <h4 className='font-semibold text-sm p-0 -mt-[.7px] ml-1'>{leadUsers[2]?.points}</h4>
                     </div>
                     <div className="font-semibold">
-                        {leadUsers[2]?.email === user?.email ? 'You' : leadUsers[2]?.fullName}
+                        {leadUsers[2]?.email === user?.email ? 'You' : leadUsers[2]?.fullName ?? '---'}
                     </div>
                 </div> 
 

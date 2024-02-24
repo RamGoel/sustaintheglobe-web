@@ -12,14 +12,11 @@ import {
   arrayRemove,
   setDoc,
   increment,
-  Timestamp,
-  getFirestore,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { PostProps } from "../types/posts.types";
 import { toast } from "react-toastify";
-import { getTimeStampLikeJava } from "./task-helper";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const fetchCompletePostList = async (
@@ -83,7 +80,7 @@ export const createPost = async (
 ) => {
   const storage = getStorage();
   const file = postData.file;
-  const imageRef = ref(storage, file.name);
+  const imageRef = ref(storage, `/postMedia/${postData.userId}/${file.name}`);
 
   uploadBytes(imageRef, file)
     .then((snapshot) => {

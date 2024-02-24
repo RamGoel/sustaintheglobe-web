@@ -48,17 +48,17 @@ const AddPost = () => {
     }
 
     function previewFile() {
-        const fileRead = ref?.current?.files[0]
+        const fileRead = (ref?.current as any)?.files[0]
         const reader = new FileReader();
 
         reader.onloadend = function () {
-            imageRef.current.src = reader.result;
+            (imageRef.current as any).src = reader.result;
         }
 
         if (fileRead) {
             reader.readAsDataURL(fileRead);
         } else {
-            imageRef.current.src = "";
+            (imageRef.current as any).src = "";
         }
     }
     return (

@@ -29,7 +29,7 @@ export const getTimeStampLikeJava = () => {
     timeZone: "UTC", // Adjust this according to your requirements
   };
 
-  return date.toLocaleString("en-US", options);
+  return date.toLocaleString("en-US", options as any);
 };
 const getCurrentTasks = async (userId: string) => {
   return await getDoc(doc(db, "Users", userId));
@@ -78,6 +78,7 @@ export const assignTasksMaster = async (userId: string) => {
 
     const tasksArray: any = [];
     expiryStatus.forEach((item: string, index: number) => {
+        console.log(item);
       const level = index < 2 ? 1 : index < 3 ? 2 : 3;
       console.log(count, "times");
       assignTaskByLevel(userId, level, async (userTask: any) => {

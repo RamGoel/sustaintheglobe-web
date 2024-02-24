@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import BottomNavbar from '../../components/bottom-nav'
 import ScreenLoader from '../../components/screen-loader';
@@ -21,13 +22,15 @@ const TaskPage = () => {
         async function assignUserTasks() {
             if (user?.userID) {
                 enableLoader();
-                let userTasks = await getUserCurrentTasks(user.userID);
+                const userTasks = await getUserCurrentTasks(user.userID);
                 if (userTasks?.length) {
                     saveTasks(userTasks)
                 } else {
-                    await assignTasksMaster(user?.userID)
-                    userTasks = await getUserCurrentTasks(user.userID);
-                    saveTasks(userTasks)
+                    assignTasksMaster(user?.userID).then(() => {
+                        getUserCurrentTasks(user?.userID as any).then(response => {
+                            saveTasks(response)
+                        })
+                    })
                 }
                 disableLoader()
             }

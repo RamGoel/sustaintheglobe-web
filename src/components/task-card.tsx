@@ -21,7 +21,6 @@ const TaskCard = ({ data, type, clickHandler }: { data: TaskProps, type: string,
     return (
         <div onClick={(ev: any) => {
             if (!['task-cta', 'task-cta-image'].includes(ev.target.id)) {
-                console.log(ev.target)
                 clickHandler()
             } else {
                 if (data.postID) {

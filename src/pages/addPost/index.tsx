@@ -93,7 +93,6 @@ const AddPost = () => {
                             setFile(ev.target.files?.[0])
                             previewFile()
                         }
-                        console.log(ev.target.files)
                     }} type='file' accept='.png,.jpg' className='hidden' />
                     <img onClick={() => {
                         (ref?.current as any)?.click();

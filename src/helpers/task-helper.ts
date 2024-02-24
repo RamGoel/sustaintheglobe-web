@@ -68,7 +68,6 @@ export const assignTasksMaster = async (userId: string) => {
     return acc;
   }, 0);
 
-  console.log(totalExpiredTasks);
 
   if (!totalExpiredTasks) {
     return;
@@ -78,9 +77,7 @@ export const assignTasksMaster = async (userId: string) => {
 
     const tasksArray: any = [];
     expiryStatus.forEach((item: string, index: number) => {
-        console.log(item);
       const level = index < 2 ? 1 : index < 3 ? 2 : 3;
-      console.log(count, "times");
       assignTaskByLevel(userId, level, async (userTask: any) => {
         count++;
         tasksArray.push(userTask);
@@ -138,7 +135,6 @@ const assignTaskByLevel = async (
 
   // Appending more info for user reference
   const userTask = {
-    ...randomTask,
     created: getTimeStampLikeJava(),
     personalised: false,
     masterTaskID: randomTask.taskID,
@@ -161,12 +157,20 @@ export const getUserCurrentTasks = async (_userId: string) => {
   }
 
   for (let i = 0; i < taskArray.length; i++) {
-    const taskSnapshot = await getDoc(
+    const userTaskSnapshot = await getDoc(
       doc(db, `Users/${_userId}/allUserTasks/${taskArray[i]}`)
     );
 
-    if (taskSnapshot.exists()) {
-      taskArray[i] = taskSnapshot.data();
+    if (userTaskSnapshot.exists()) {
+      const taskSnapshot = await getDoc(
+        doc(db, "Tasks", userTaskSnapshot.data()?.masterTaskID)
+      );
+      if (taskSnapshot.exists()) {
+        taskArray[i] = {
+          ...taskSnapshot.data(),
+          ...userTaskSnapshot.data(),
+        };
+      }
     }
   }
 

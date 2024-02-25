@@ -111,11 +111,17 @@ export const createPost = async (
           );
 
           if (updatedTask.exists()) {
-            const level = updatedTask.data().level;
-            await updateDoc(doc(db, `Users/${postData.userId}`), {
-              points: increment(level === 1 ? 3 : level === 2 ? 10 : 30),
-              completedTasks: arrayUnion(taskId),
-            });
+            let masterTask = await getDoc(
+              doc(db, `Tasks/${updatedTask.data().masterTaskID}`)
+            );
+            if (masterTask.exists()) {
+              let data = masterTask.data();
+              const level = data.level;
+              await updateDoc(doc(db, `Users/${postData.userId}`), {
+                points: increment(level === 1 ? 3 : level === 2 ? 10 : 30),
+                completedTasks: arrayUnion(taskId),
+              });
+            }
           }
 
           callback(true);

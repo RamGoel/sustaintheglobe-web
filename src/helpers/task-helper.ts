@@ -1,149 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  collection,
-  doc,
   getDoc,
+  doc,
   getDocs,
+  collection,
   query,
+  where,
+  serverTimestamp,
   setDoc,
   updateDoc,
-  where,
+  arrayUnion,
 } from "firebase/firestore";
-import { db } from "../utils/firebase";
 import { toast } from "react-toastify";
-type taskStatusType = {
-  expiryStatus: boolean;
-  taskID: "0";
-};
-
-export const getTimeStampLikeJava = () => {
-  const date = new Date();
-  const options = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "UTC", // Adjust this according to your requirements
-  };
-
-  return date.toLocaleString("en-US", options as any);
-};
-const getCurrentTasks = async (userId: string) => {
-  return await getDoc(doc(db, "Users", userId));
-};
-
-const createTaskStruct = async (userId: string) => {
-  const data = await getCurrentTasks(userId);
-
-  if (data.exists() && data.data().length) {
-    return data.data();
-  } else {
-    const taskList: taskStatusType[] = [0, 0, 0, 0].map(() => {
-      return {
-        taskID: "0",
-        expiryStatus: true,
-      };
-    });
-
-    return taskList;
-  }
-};
-
-export const assignTasksMaster = async (userId: string) => {
-  const currentTasks: string[] = [];
-  const expiryStatus: string[] = [];
-
-  const userTasksStatus = await createTaskStruct(userId);
-
-  userTasksStatus?.forEach((item: taskStatusType) => {
-    currentTasks.push(item.taskID);
-    expiryStatus.push(item.expiryStatus.toString());
-  });
-
-  const totalExpiredTasks = expiryStatus.reduce((acc, curr) => {
-    if (curr) acc++;
-    return acc;
-  }, 0);
-
-
-  if (!totalExpiredTasks) {
-    return;
-  } else {
-    let count = 0;
-    const finalCount = totalExpiredTasks;
-
-    const tasksArray: any = [];
-    expiryStatus.forEach((item: string, index: number) => {
-      const level = index < 2 ? 1 : index < 3 ? 2 : 3;
-      assignTaskByLevel(userId, level, async (userTask: any) => {
-        count++;
-        tasksArray.push(userTask);
-
-        currentTasks[index] = userTask.taskID;
-
-        if (count === finalCount) {
-          await updateDoc(doc(db, "Users", userId), {
-            currentTasks: currentTasks,
-          });
-
-          for (let i = 0; i < tasksArray.length; i++) {
-            await setDoc(
-              doc(
-                db,
-                "Users/" + userId + "/allUserTasks/" + tasksArray[i].taskID
-              ),
-              tasksArray[i]
-            );
-          }
-          localStorage.setItem(
-            "TASK_ASSIGNED",
-            JSON.stringify({
-              timer: Date.now(),
-            })
-          );
-          toast(currentTasks.length + " Tasks Assigned");
-        }
-      });
-    });
-  }
-};
-
-const assignTaskByLevel = async (
-  userId: string,
-  level: number,
-  callback: (data?: any) => void
-) => {
-  const tasksByLevelSnapshot = await getDocs(
-    query(collection(db, "Tasks"), where("level", "==", level))
-  );
-
-  if (tasksByLevelSnapshot.empty) {
-    toast("No tasks found for level " + level);
-    return;
-  }
-
-  const tasks: any = [];
-  tasksByLevelSnapshot.forEach((item) => {
-    tasks.push(item.data());
-  });
-
-  const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
-  const userTasksRef = doc(collection(db, `Users/${userId}/allUserTasks`));
-
-  // Appending more info for user reference
-  const userTask = {
-    created: getTimeStampLikeJava(),
-    personalised: false,
-    masterTaskID: randomTask.taskID,
-    postID: "",
-    taskID: userTasksRef.id,
-  };
-
-  callback(userTask);
-};
+import { db } from "../utils/firebase";
+import moment from "moment";
 
 export const getUserCurrentTasks = async (_userId: string) => {
   const data = await getDoc(doc(db, "Users/" + _userId));
@@ -153,7 +23,8 @@ export const getUserCurrentTasks = async (_userId: string) => {
   if (data.exists()) {
     taskArray = data.data().currentTasks;
   } else {
-    toast("No Tasks found!");
+    toast("User not found!");
+    return;
   }
 
   for (let i = 0; i < taskArray.length; i++) {
@@ -175,4 +46,162 @@ export const getUserCurrentTasks = async (_userId: string) => {
   }
 
   return taskArray;
+};
+
+export const createNewTasksForNewUser = async (
+  _userId: string,
+  booleanArray: boolean[],
+  oldTaskIds: string[]
+) => {
+  const newTaskIds: string[] = [...oldTaskIds];
+  for (let i = 0; i < booleanArray.length; i++) {
+    if (booleanArray[i]) {
+      const level = i < 2 ? 1 : i < 3 ? 2 : 3;
+
+      const masterTasksByLevel = await getDocs(
+        query(collection(db, "Tasks"), where("level", "==", level))
+      );
+
+      if (!masterTasksByLevel.empty && masterTasksByLevel.docs) {
+        let randomMasterTask =
+          masterTasksByLevel.docs[
+            Math.floor(Math.random() * masterTasksByLevel.docs.length)
+          ];
+
+        if (newTaskIds.includes(randomMasterTask.id)) {
+          randomMasterTask =
+            masterTasksByLevel.docs[
+              Math.floor(Math.random() * masterTasksByLevel.docs.length)
+            ];
+        }
+        const newChildTaskRef = doc(
+          collection(db, "Users", _userId, "allUserTasks")
+        );
+        const newChildTask = {
+          created: serverTimestamp(),
+          masterTaskID: randomMasterTask.id,
+          postID: "",
+          taskID: newChildTaskRef.id,
+          personalised: false,
+        };
+
+        try {
+          await setDoc(newChildTaskRef, newChildTask);
+          newTaskIds[i] = newChildTaskRef.id;
+        } catch (err) {
+          console.log(newChildTask, "failed to put on firestore");
+          return;
+        }
+      } else {
+        toast("No master tasks found!");
+        return;
+      }
+    }
+  }
+
+  const thisUserRef = doc(db, "Users", _userId);
+  await updateDoc(thisUserRef, {
+    currentTasks: newTaskIds,
+  });
+
+  toast(
+    `Yayy! you got ${booleanArray.filter((item) => item).length} new tasks`
+  );
+
+  return getUserCurrentTasks(_userId);
+};
+
+export const getOrCreateUserTasks = async (
+  _userId: string,
+  currentTaskIds: string[]
+) => {
+  const userCurrentTasks = await getUserCurrentTasks(_userId);
+
+  if (!userCurrentTasks.length) {
+    console.log("length of current tasks was 0, I created 4");
+    const newTasksForUser = await createNewTasksForNewUser(
+      _userId,
+      [true, true, true, true],
+      currentTaskIds
+    );
+
+    return newTasksForUser;
+  }
+
+  const lastExecTimestamp: any = localStorage.getItem("REPLACED_EXPIRED_TASKS");
+  if (
+    !lastExecTimestamp ||
+    moment(JSON.parse(lastExecTimestamp).time).isBefore(
+      moment().format("YYYY-MM-DD")
+    )
+  ) {
+    const expiracyArray = [false, false, false, false];
+    let expiredCount = 0;
+    for (let i = 0; i < expiracyArray.length; i++) {
+      console.log(
+        checkIfTaskExpired(
+          userCurrentTasks[i].created,
+          userCurrentTasks[i].level
+        )
+      );
+
+      if (
+        checkIfTaskExpired(
+          userCurrentTasks[i].created,
+          userCurrentTasks[i].level
+        )
+      ) {
+        expiracyArray[i] = true;
+        expiredCount++;
+      }
+    }
+
+    if (expiredCount === 0) {
+      console.log("no task expired, so I returned old ones");
+      localStorage.setItem(
+        "REPLACED_EXPIRED_TASKS",
+        JSON.stringify({
+          time: Date.now(),
+        })
+      );
+      return userCurrentTasks;
+    } else {
+      console.log("these tasks expired", expiracyArray);
+      const newTasksForUser = await createNewTasksForNewUser(
+        _userId,
+        expiracyArray,
+        currentTaskIds
+      );
+      localStorage.setItem(
+        "REPLACED_EXPIRED_TASKS",
+        JSON.stringify({
+          time: Date.now(),
+        })
+      );
+      return newTasksForUser;
+    }
+  } else {
+    console.log("already replaced for 1 time, so returning as it is");
+    return userCurrentTasks;
+  }
+};
+
+const checkIfTaskExpired = (timestamp: any, level: number) => {
+  const now = moment();
+  const taskDate = moment(timestamp?.seconds * 1000);
+
+  const daysDiff = now.diff(taskDate, "days");
+  const weeksDiff = now.diff(taskDate, "weeks");
+  const monthsDiff = now.diff(taskDate, "months");
+
+  switch (level) {
+    case 1:
+      return daysDiff >= 1;
+    case 2:
+      return weeksDiff >= 1;
+    case 3:
+      return monthsDiff >= 1;
+    default:
+      return false;
+  }
 };

@@ -7,9 +7,9 @@ import { TaskProps } from '../../types/task.types';
 import { getDailyTasks, getMonthlyTasks, getWeeklyTasks } from '../../utils/handler';
 import TaskInfoPopup from '../../components/task-info-popup';
 import { useUserStore } from '../../store/user.store';
-import { assignTasksMaster, getUserCurrentTasks } from '../../helpers/task-helper';
 import { useLoaderStore } from '../../store/loader.store';
 import { useTaskStore } from '../../store/task.store';
+import { getOrCreateUserTasks } from '../../helpers/task-helper';
 
 
 const TaskPage = () => {
@@ -22,16 +22,9 @@ const TaskPage = () => {
         async function assignUserTasks() {
             if (user?.userID) {
                 enableLoader();
-                const userTasks = await getUserCurrentTasks(user.userID);
-                if (userTasks?.length) {
-                    saveTasks(userTasks)
-                } else {
-                    assignTasksMaster(user?.userID).then(() => {
-                        getUserCurrentTasks(user?.userID as any).then(response => {
-                            saveTasks(response)
-                        })
-                    })
-                }
+                const userTasks = await getOrCreateUserTasks(user.userID, user.currentTasks);
+                console.log(userTasks)
+                saveTasks(userTasks)
                 disableLoader()
             }
         }

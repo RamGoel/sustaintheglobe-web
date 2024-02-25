@@ -20,7 +20,7 @@ const TaskCard = ({ data, type, clickHandler }: { data: TaskProps, type: string,
     }
     return (
         <div onClick={(ev: any) => {
-            if (!['task-cta', 'task-cta-image'].includes(ev.target.id)) {
+            if (!['task-cta', 'task-cta-div'].includes(ev.target.id)) {
                 clickHandler()
             } else {
                 if (data.postID) {
@@ -38,7 +38,7 @@ const TaskCard = ({ data, type, clickHandler }: { data: TaskProps, type: string,
                 <p className='font-semibold text-green-600 text-sm'>+{scoreMapper[data.level]} Points</p>
             </div>
             <div id='task-cta' className='p-1 bg-white hover:bg-green-100 transition-all cursor-pointer border-2 rounded-xl'>
-                <img id='task-cta-image' src={checkImage} alt="check-image" width={40} height={40} />
+                {data.postID ? <img src={checkImage} alt="check-image" width={50} height={50} /> : <div id='task-cta-div' className='w-[50px] h-[50px] border-green-400 border-2 rounded-md'></div>}
             </div>
         </div>
     )

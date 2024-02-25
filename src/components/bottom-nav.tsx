@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import leaderBoardIcon from '../assets/res/ic_leaderboard.svg'
-import feedIcon from '../assets/res/ic_feed.svg'
-import profileIcon from '../assets/res/ic_default_profile.svg'
-import tasksIcon from '../assets/res/ic_task.svg'
+import leaderBoardIcon from '../assets/icons/ic_leaderboard.svg'
+import feedIcon from '../assets/icons/ic_feed.svg'
+import profileIcon from '../assets/icons/ic_default_profile.svg'
+import tasksIcon from '../assets/icons/ic_task.svg'
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../store/user.store'

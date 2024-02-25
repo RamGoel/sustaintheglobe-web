@@ -1,30 +1,77 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+<img src="https://raw.githubusercontent.com/RamGoel/sustaintheglobe-web/master/src/assets/icons/icon.png?token=GHSAT0AAAAAACOQQCWWFOYCM5EUTOKIKP5QZO3EQRA" width=100 height=100>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Sustain The Globe
 
-## Expanding the ESLint configuration
+SustainTheGlobe is a gamification based application which assigns nature friendly tasks to users which help them reduce their carbon footprint.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Tech Stack
+
+**UI Library:** ReactJS (Bootstrapped using Vite)
+
+**Components and Styling:** Material UI, TailwindCSS
+
+**State Management:** Zustand
+
+**Authentication:** Firebase Email Provider
+
+**Database:** Firebase Firestore
+
+**Storage:** Firebase Storage
+
+**Date Handling:** MomentJS
+
+**Languages:** Typescript
+
+**Icons:** Lucide React Icons
+
+
+
+## Installation
+
+The application is deployed on netlify and can be accessed using this [URL](https://sustain-globe.netlify.app/).
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/RamGoel/sustaintheglobe-web
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Go to the project directory
+
+```bash
+  cd sustaintheglobe-web
+```
+
+Install dependencies
+
+```bash
+  yarn
+```
+
+Start the server
+
+```bash
+  yarn dev
+```
+
+
+## Features
+
+- Automatic task assignment and replacement.
+- Feed to see other users post.
+- Leaderboard to gamify the process.
+- Follow other users to see their progress.
+- Points associated with each task completion.
+
+
+## Feedback
+
+If you have any feedback, please reach out to us at rgoel766@gmail.com
+

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import appImage from '../../assets/res/login.svg';
-import googleImage from '../../assets/google.png';
-import fbImage from '../../assets/facebook.png';
+import appImage from '../../assets/icons/login.svg';
+import googleImage from '../../assets/icons/google.png';
+import fbImage from '../../assets/icons/facebook.png';
 import { ArrowRight } from 'lucide-react';
 import { config } from './config';
 import { toast } from 'react-toastify';

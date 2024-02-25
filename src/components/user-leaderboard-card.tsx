@@ -1,6 +1,6 @@
 import { UserProps } from '../types/user.types'
-import ic_default_profile from '../assets/res/ic_default_profile.svg'
-import ic_points from '../assets/res/ic_points.svg';
+import ic_default_profile from '../assets/icons/ic_default_profile.svg'
+import ic_points from '../assets/icons/ic_points.svg';
 import { useNavigate } from 'react-router-dom';
 
 const UserLeaderBoardCard = ({ data, rank }: { data: UserProps, rank: number }) => {

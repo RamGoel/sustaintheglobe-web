@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import profileIcon from '../../assets/res/ic_default_profile.svg'
+import profileIcon from '../../assets/icons/ic_default_profile.svg'
 import PostCard from '../../components/post-card'
 import NoPosts from '../../components/no-posts'
 import { ArrowLeft, LogOutIcon, UserPlus } from 'lucide-react'

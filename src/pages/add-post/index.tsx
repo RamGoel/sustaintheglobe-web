@@ -2,8 +2,8 @@
 
 import BottomNavbar from '../../components/bottom-nav'
 import { ArrowLeft } from 'lucide-react';
-import checkImage from '../../assets/res/ic_tick.svg'
-import add from '../../assets/res/add.svg'
+import checkImage from '../../assets/icons/ic_tick.svg'
+import add from '../../assets/icons/add.svg'
 import { useNavigate, useParams } from 'react-router-dom';
 import { createPost } from '../../helpers/post-helper';
 import { useUserStore } from '../../store/user.store';

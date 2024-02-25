@@ -9,7 +9,6 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
-  arrayUnion,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { db } from "../utils/firebase";

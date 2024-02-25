@@ -4,6 +4,7 @@ export type TaskProps = {
   score: string;
   desc: string;
   category: string;
-  taskId: string;
+  postID?: string;
+  taskID: string;
   level: 1 | 2 | 3;
 };

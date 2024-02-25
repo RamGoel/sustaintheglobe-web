@@ -19,7 +19,6 @@ export const loginUser = (
   signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
-      console.log(user);
       const querySnapshot = await getDoc(doc(db, "Users", user.uid));
 
       if (querySnapshot.exists()) {

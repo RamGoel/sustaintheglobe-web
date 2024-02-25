@@ -4,7 +4,7 @@ export interface UserProps {
   badges?: string[];
   bio?: string;
   completedTasks?: string[];
-  currentTasks?: string[];
+  currentTasks: string[];
   dob?: string;
   email?: string;
   followers?: string[];

@@ -57,7 +57,6 @@ const ProfilePage = () => {
         return <ScreenLoader />
     }
 
-    console.log(profileUser)
     return (
         <div className='flex items-center flex-col justify-top my-auto h-screen '>
             <div className="relative pt-[60px] w-full flex flex-col items-center min-h-[400px]">

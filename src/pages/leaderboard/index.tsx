@@ -1,11 +1,11 @@
 import { CheckIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import BottomNavbar from '../../components/bottom-nav'
-import ic_points from '../../assets/res/ic_points.svg';
-import ic_default_profile from '../../assets/res/ic_default_profile.svg'
-import ic_medal_first from '../../assets/res/ic_medal_first.svg';
-import ic_medal_second from '../../assets/res/ic_medal_second.svg';
-import ic_medal_third from '../../assets/res/ic_medal_third.svg';
+import ic_points from '../../assets/icons/ic_points.svg';
+import ic_default_profile from '../../assets/icons/ic_default_profile.svg'
+import ic_medal_first from '../../assets/icons/ic_medal_first.svg';
+import ic_medal_second from '../../assets/icons/ic_medal_second.svg';
+import ic_medal_third from '../../assets/icons/ic_medal_third.svg';
 import { useLeaderboardStore } from '../../store/leaderboard.store';
 import { useLoaderStore } from '../../store/loader.store';
 import { useNavigate } from 'react-router-dom';

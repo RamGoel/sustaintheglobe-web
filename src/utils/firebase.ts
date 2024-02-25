@@ -2,12 +2,12 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
-  apiKey: "AIzaSyCS5MpMkzyQ3fE-OM0RVtvzgRTkDuXoyWg",
-  authDomain: "sustaintheglobe-db1b9.firebaseapp.com",
-  projectId: "sustaintheglobe-db1b9",
-  storageBucket: "sustaintheglobe-db1b9.appspot.com",
-  messagingSenderId: "609215970977",
-  appId: "1:609215970977:web:9ca180d51e4fe18d583ae0",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MSG_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 export let app: any, db: any;

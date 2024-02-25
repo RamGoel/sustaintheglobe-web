@@ -144,13 +144,6 @@ export const getOrCreateUserTasks = async (
     const expiracyArray = [false, false, false, false];
     let expiredCount = 0;
     for (let i = 0; i < expiracyArray.length; i++) {
-      console.log(
-        checkIfTaskExpired(
-          userCurrentTasks[i].created,
-          userCurrentTasks[i].level
-        )
-      );
-
       if (
         checkIfTaskExpired(
           userCurrentTasks[i].created,

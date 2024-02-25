@@ -12,7 +12,7 @@ import { initFirebaseApp } from "../../utils/firebase";
 import FeedPage from "../feed";
 import LeaderBoard from "../leaderboard"
 import TaskPage from "../tasks";
-import AddPost from "../addPost"
+import AddPost from "../add-post"
 
 
 import ActionLoader from "../../components/action-loader";

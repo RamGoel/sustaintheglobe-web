@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom'
-import checkImage from '../assets/res/ic_tick.svg'
+import checkImage from '../assets/icons/ic_tick.svg'
 import { TaskProps } from '../types/task.types'
 import { getCategoryImagePath } from '../utils/mapper'
 import { toast } from 'react-toastify'

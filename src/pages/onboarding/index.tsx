@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowRight, MapPinned, UserCircle2Icon, UserRound, VenetianMask } from 'lucide-react'
-import profileImage from '../../assets/res/ic_default_profile.svg'
-import editImage from '../../assets/res/ic_edit.svg'
-import manImage from '../../assets/res/ic_male.svg'
-import womenImage from '../../assets/res/ic_female.svg'
-import otherImage from '../../assets/res/ic_other.svg'
+import profileImage from '../../assets/icons/ic_default_profile.svg'
+import editImage from '../../assets/icons/ic_edit.svg'
+import manImage from '../../assets/icons/ic_male.svg'
+import womenImage from '../../assets/icons/ic_female.svg'
+import otherImage from '../../assets/icons/ic_other.svg'
 import EcoInput from '../../components/input'
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
@@ -47,6 +47,28 @@ const OnboardingPage = () => {
                 }
                 disableLoader()
             })
+        }
+    }
+
+    const handleGetLocation = () => {
+        try {
+            enableLoader()
+            navigator.geolocation.getCurrentPosition((val) => {
+                const { latitude, longitude } = val.coords
+                fetch(`https://us1.locationiq.com/v1/reverse?key=${import.meta.env.VITE_SOME_KEY}&lat=${latitude}&lon=${longitude}&format=json&`).then(res => res.json()).then(res => {
+                    setFormData({ ...formData, location: `${res.address.city},${res.address.state},${res.address.country}` })
+                    setExtras({
+                        cityName: res.address.city,
+                        countryName: res.address.country,
+                        location: new GeoPoint(latitude, longitude)
+                    })
+                })
+                toast('Got your location!')
+                disableLoader()
+            })
+        } catch (err) {
+            disableLoader()
+            toast('Error getting location!')
         }
     }
 
@@ -118,20 +140,7 @@ const OnboardingPage = () => {
                 </div>
 
                 <EcoInput
-                    onClick={() => {
-                        navigator.geolocation.getCurrentPosition((val) => {
-                            const { latitude, longitude } = val.coords
-                            fetch(`https://us1.locationiq.com/v1/reverse?key=pk.6f9e856493e5bc83c515b296c5d22a48&lat=${latitude}&lon=${longitude}&format=json&`).then(res => res.json()).then(res => {
-                                setFormData({ ...formData, location: `${res.address.city},${res.address.state},${res.address.country}` })
-                                setExtras({
-                                    cityName: res.address.city,
-                                    countryName: res.address.country,
-                                    location: new GeoPoint(latitude, longitude)
-                                })
-                            })
-                            toast('Got your location!')
-                        })
-                    }}
+                    onClick={handleGetLocation}
                     placeholder='Tap to get location'
                     type='text'
                     leftIcon={<MapPinned color='black' />}

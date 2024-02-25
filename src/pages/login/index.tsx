@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
-import appImage from '../../assets/res/login.svg';
-import googleImage from '../../assets/google.png';
-import fbImage from '../../assets/facebook.png';
+import appImage from '../../assets/icons/login.svg';
+import googleImage from '../../assets/icons/google.png';
+import fbImage from '../../assets/icons/facebook.png';
 import { COLORS } from '../../utils/colors';
 import { AtSignIcon, LockIcon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';

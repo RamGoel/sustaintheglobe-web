@@ -1,6 +1,6 @@
 
 
-<img src="https://raw.githubusercontent.com/RamGoel/sustaintheglobe-web/master/src/assets/icons/icon.png?token=GHSAT0AAAAAACOQQCWWFOYCM5EUTOKIKP5QZO3EQRA" width=100 height=100>
+<img src='https://raw.githubusercontent.com/RamGoel/sustaintheglobe-web/master/src/assets/icons/icon.png?token=GHSAT0AAAAAACOQQCWXNTS4HS4SMZ6GFZ4WZO3EYSA' width=100 height=100>
 
 # Sustain The Globe
 

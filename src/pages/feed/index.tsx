@@ -21,11 +21,11 @@ const FeedPage = () => {
         enableLoader()
         let data;
         if (category === 'Nearby') {
-            data = await fetchCompletePostList('cityName', user?.cityName, user?.userID)
+            data = await fetchCompletePostList('cityName', user?.cityName)
         } else if (category === 'Country') {
-            data = await fetchCompletePostList('countryName', user?.countryName, user?.userID)
+            data = await fetchCompletePostList('countryName', user?.countryName)
         } else if (category === 'World') {
-            data = await fetchCompletePostList('', '', user?.userID)
+            data = await fetchCompletePostList()
         } else return;
 
         if (!data) {

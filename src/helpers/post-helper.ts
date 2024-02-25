@@ -21,8 +21,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const fetchCompletePostList = async (
   queryKey?: string,
-  queryValue?: string,
-  userId: string
+  queryValue?: string
 ) => {
   let postSnapshot;
   if (queryKey && queryValue) {

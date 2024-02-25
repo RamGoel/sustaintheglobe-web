@@ -73,6 +73,13 @@ export const createNewTasksForNewUser = async (
               Math.floor(Math.random() * masterTasksByLevel.docs.length)
             ];
         }
+
+        if (newTaskIds.includes(randomMasterTask.id)) {
+          randomMasterTask =
+            masterTasksByLevel.docs[
+              Math.floor(Math.random() * masterTasksByLevel.docs.length)
+            ];
+        }
         const newChildTaskRef = doc(
           collection(db, "Users", _userId, "allUserTasks")
         );
@@ -116,17 +123,6 @@ export const getOrCreateUserTasks = async (
 ) => {
   const userCurrentTasks = await getUserCurrentTasks(_userId);
 
-  const lastExecTimestamp: any = localStorage.getItem("REPLACED_EXPIRED_TASKS");
-  if (
-    !lastExecTimestamp ||
-    !moment(JSON.parse(lastExecTimestamp).time).isBefore(
-      moment().format("YYYY-MM-DD")
-    )
-  ) {
-    console.log("already replaced for 1 time, so returning as it is");
-    return userCurrentTasks;
-  }
-
   if (!userCurrentTasks.length) {
     console.log("length of current tasks was 0, I created 4");
     const newTasksForUser = await createNewTasksForNewUser(
@@ -138,41 +134,61 @@ export const getOrCreateUserTasks = async (
     return newTasksForUser;
   }
 
-  const expiracyArray = [false, false, false, false];
-  let expiredCount = 0;
-  for (let i = 0; i < expiracyArray.length; i++) {
-    if (
-      userCurrentTasks[i].postID ||
-      checkIfTaskExpired(userCurrentTasks[i].created, userCurrentTasks[i].level)
-    ) {
-      expiracyArray[i] = true;
-      expiredCount++;
-    }
-  }
+  const lastExecTimestamp: any = localStorage.getItem("REPLACED_EXPIRED_TASKS");
+  if (
+    !lastExecTimestamp ||
+    moment(JSON.parse(lastExecTimestamp).time).isBefore(
+      moment().format("YYYY-MM-DD")
+    )
+  ) {
+    const expiracyArray = [false, false, false, false];
+    let expiredCount = 0;
+    for (let i = 0; i < expiracyArray.length; i++) {
+      console.log(
+        checkIfTaskExpired(
+          userCurrentTasks[i].created,
+          userCurrentTasks[i].level
+        )
+      );
 
-  if (expiredCount === 0) {
-    console.log("no task expired, so I returned old ones");
-    localStorage.setItem(
-      "REPLACED_EXPIRED_TASKS",
-      JSON.stringify({
-        time: Date.now(),
-      })
-    );
-    return userCurrentTasks;
+      if (
+        checkIfTaskExpired(
+          userCurrentTasks[i].created,
+          userCurrentTasks[i].level
+        )
+      ) {
+        expiracyArray[i] = true;
+        expiredCount++;
+      }
+    }
+
+    if (expiredCount === 0) {
+      console.log("no task expired, so I returned old ones");
+      localStorage.setItem(
+        "REPLACED_EXPIRED_TASKS",
+        JSON.stringify({
+          time: Date.now(),
+        })
+      );
+      return userCurrentTasks;
+    } else {
+      console.log("these tasks expired", expiracyArray);
+      const newTasksForUser = await createNewTasksForNewUser(
+        _userId,
+        expiracyArray,
+        currentTaskIds
+      );
+      localStorage.setItem(
+        "REPLACED_EXPIRED_TASKS",
+        JSON.stringify({
+          time: Date.now(),
+        })
+      );
+      return newTasksForUser;
+    }
   } else {
-    console.log("these tasks expired", expiracyArray);
-    const newTasksForUser = await createNewTasksForNewUser(
-      _userId,
-      expiracyArray,
-      currentTaskIds
-    );
-    localStorage.setItem(
-      "REPLACED_EXPIRED_TASKS",
-      JSON.stringify({
-        time: Date.now(),
-      })
-    );
-    return newTasksForUser;
+    console.log("already replaced for 1 time, so returning as it is");
+    return userCurrentTasks;
   }
 };
 

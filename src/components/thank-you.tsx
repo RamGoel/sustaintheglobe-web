@@ -49,12 +49,92 @@ const ThankYouModal = ({ amount, hideModal }: ThankYouModalProps) => {
           <p className="text-sm text-gray-500 mt-4 text-center">
             Together we can make a difference in fighting hunger.
           </p>
-          <button
-            className="bg-green-500 mt-3 text-white px-4 py-2 rounded-md"
-            onClick={hideModal}
-          >
-            Close
-          </button>
+          <div className="flex gap-2 mt-3">
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-md"
+              onClick={hideModal}
+            >
+              Close
+            </button>
+            <button
+              className="bg-green-100 text-green-700 px-4 py-2 rounded-md flex items-center gap-2"
+              onClick={() => {
+                // Create a canvas element
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+                canvas.width = 800;
+                canvas.height = 600;
+
+                if (ctx) {
+                  // Draw white background
+                  ctx.fillStyle = "#fff";
+                  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                  // Draw success icon
+                  ctx.beginPath();
+                  ctx.arc(400, 150, 50, 0, 2 * Math.PI);
+                  ctx.fillStyle = "#dcfce7";
+                  ctx.fill();
+
+                  // Draw checkmark
+                  ctx.strokeStyle = "#22c55e";
+                  ctx.lineWidth = 8;
+                  ctx.beginPath();
+                  ctx.moveTo(375, 150);
+                  ctx.lineTo(395, 170);
+                  ctx.lineTo(425, 130);
+                  ctx.stroke();
+
+                  // Draw text
+                  ctx.fillStyle = "#000";
+                  ctx.font = "bold 24px Arial";
+                  ctx.textAlign = "center";
+                  ctx.fillText(`Thank you ${user?.fullName}!`, 400, 250);
+
+                  ctx.font = "20px Arial";
+                  ctx.fillText(`Your donation of ₹${amount}`, 400, 290);
+                  ctx.fillText(
+                    `will help feed ${platesCount} people`,
+                    400,
+                    320
+                  );
+
+                  // Convert to image and share
+                  canvas.toBlob((blob) => {
+                    if (blob) {
+                      const file = new File([blob], "donation.png", {
+                        type: "image/png",
+                      });
+                      if (navigator.share) {
+                        navigator.share({
+                          files: [file],
+                          title: "My Donation to FeedMore India",
+                          text: `I just donated ₹${amount} to help feed ${platesCount} people!`,
+                        });
+                      }
+                    }
+                  });
+                }
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16 6 12 2 8 6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
+              </svg>
+              Share
+            </button>
+          </div>
         </div>
       </div>
     </div>

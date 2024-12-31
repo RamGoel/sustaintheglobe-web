@@ -75,7 +75,7 @@ const MapShareComponent = () => {
       className="bg-green-500 text-white px-2 py-1 rounded-lg text-sm flex mr-auto items-center gap-2"
     >
       <Download size={20} />
-      Download Stats as Image
+      Download Milestones as Image
     </button>
   );
 };
@@ -161,7 +161,7 @@ const ProfilePage = () => {
             <h1 className="text-xl font-semibold mb-3 px-2">
               Donation History
             </h1>
-            {donations?.map((item, index) => (
+            {donations?.map((item: any, index: number) => (
               <DonationCard key={index} donation={item} />
             ))}
           </div>

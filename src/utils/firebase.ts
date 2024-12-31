@@ -2,12 +2,14 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MSG_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyC02EYC6C-cBKu026a0vGVVjuV9Bzw6vi8",
+  authDomain: "kalakriti-e95b0.firebaseapp.com",
+  databaseURL: "https://kalakriti-e95b0-default-rtdb.firebaseio.com",
+  projectId: "kalakriti-e95b0",
+  storageBucket: "kalakriti-e95b0.appspot.com",
+  messagingSenderId: "1033465116600",
+  appId: "1:1033465116600:web:f632d426be315594c8414d",
+  measurementId: "G-F7PCD6LD02",
 };
 
 export let app: any, db: any;

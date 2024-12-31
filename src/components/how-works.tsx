@@ -38,6 +38,13 @@ const HowItWorksModal = ({ hideModal }: HowItWorksModalProps) => {
               and info of their donations
             </li>
           </ul>
+          <br />
+          <br />
+
+          <p className="font-semibold">
+            Built this in hurry in 3 hours, so it's kinda scrappy, but I hope it
+            conveys the idea I am proposing. Thanks for your time.
+          </p>
 
           <button
             onClick={hideModal}

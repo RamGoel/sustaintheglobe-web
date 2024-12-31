@@ -16,6 +16,10 @@ const HomePage = () => {
     if (params.get("email")) {
       setShowThankYouModal(true);
     }
+
+    if (params.get("howItWorks")) {
+      setShowHowItWorks(true);
+    }
   }, []);
 
   const analyticsData = analytics[0];
